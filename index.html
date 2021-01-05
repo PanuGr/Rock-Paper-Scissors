@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Play the classic game Rock-Paper-Scissors and try your luck against the computer or your friends"
+    />
+    <meta name="keywords" content="Rock Paper Scissors, game" />
+    <meta name="author" content="Panagiotis Panagiotakopoulos" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="shortcut icon"
+      href="scissors.ico"
+      type="image/x-icon"
+    />
+    <title>Rock Paper Scissors</title>
+    <style>
+      h1,h2 {
+        font-family: cursive;
+      }
+      hr {
+        border-top: 2px solid black;
+      }
+      main button:hover {
+        animation: rubberBand;
+        animation-duration: 0.5s;
+      }
+      .flex {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      @media (max-width: 450px) {
+        .flex {
+          flex-direction: column;
+        }
+      }
+
+      section h2 {
+        padding-bottom: 2rem;
+      }
+      section [type="radio"] {
+        visibility: hidden;
+      }
+      section [type="radio"] + i {
+        cursor: pointer;
+      }
+      section [type="radio"] + i:hover {
+        color: #1900b3;
+        animation: rubberBand;
+        animation-duration: 0.5s;
+      }
+      section [type="radio"]:checked + i {
+        color: #ff9d05;
+      }
+      #result {
+        font-family: cursive;
+
+        letter-spacing: 2px;
+      }
+      #loader {
+        display: none;
+        font-size: xx-large;
+        font-family: cursive;
+      }
+    </style>
+  </head>
+  <body class="bg-danger text-center">
+    <header>
+      <h1 class="font-weight-bold mt-3">Rock Paper Scissors ✂️</h1>
+    </header>
+    <main>
+      <section class="d-sm-flex justify-content-center mt-5">
+        <article class="card bg-danger mx-3 shadow-lg">
+          <h2 class="card-title bg-warning p-1">Player 1 🧍</h2>
+          <form class="card-body">
+            <label for="rock">
+              <input
+                type="radio"
+                id="rock"
+                value="rock"
+                name="user"
+                aria-label="rock"
+              />
+              <i class="fas fa-hand-rock fa-2x"></i>
+            </label>
+            <label for="paper">
+              <input
+                type="radio"
+                id="paper"
+                value="paper"
+                name="user"
+                aria-label="paper"
+              />
+              <i class="fas fa-hand-paper fa-2x"></i>
+            </label>
+            <label for="scissors">
+              <input
+                type="radio"
+                id="scissors"
+                value="scissors"
+                name="user"
+                aria-label="scissors"
+              />
+              <i class="fas fa-hand-scissors fa-2x"></i>
+            </label>
+          </form>
+        </article>
+        <p class="font-weight-bold p-2">VS</p>
+        <article class="card bg-danger mx-3 shadow-lg">
+          <h2 class="card-title bg-warning p-1">Bot-player 🤖</h2>
+          <form class="card-body">
+            <i class="fas fa-hand-rock fa-2x" style="visibility: hidden"></i>
+            <i class="fas fa-hand-paper fa-2x" style="visibility: hidden"></i>
+            <i
+              class="fas fa-hand-scissors fa-2x"
+              style="visibility: hidden"
+            ></i>
+          </form>
+        </article>
+      </section>
+      <button
+        class="mt-5 btn btn-warning font-weight-bold rounded-circle btn-lg"
+      >
+        Play
+      </button>
+      <p class="text-warning font-weight-bold mt-5" id="result"></p>
+      <hr />
+
+      <h2 class="h1 font-weight-bold mb-5">Player vs Player</h2>
+      <button
+        class="btn btn-warning font-weight-bold rounded-circle btn-lg"
+        id="start"
+      >
+        Start the game
+      </button>
+      <section class="flex mt-5" style="display: none">
+        <article class="card bg-danger">
+          <h2 class="card-title bg-warning p-1">Player 1 🧍</h2>
+          <form class="card-body text-center" id="user1">
+            <label for="rock1">
+              <input
+                type="radio"
+                id="rock1"
+                value="rock"
+                name="user1"
+                aria-label="rock"
+              />
+              <i class="fas fa-hand-rock fa-2x"></i>
+            </label>
+            <label for="paper1">
+              <input
+                type="radio"
+                id="paper1"
+                value="paper"
+                name="user1"
+                aria-label="paper"
+              />
+              <i class="fas fa-hand-paper fa-2x"></i>
+            </label>
+            <label for="scissors1">
+              <input
+                type="radio"
+                id="scissors1"
+                value="scissors"
+                name="user1"
+                aria-label="scissors"
+              />
+              <i class="fas fa-hand-scissors fa-2x"></i>
+            </label>
+            <br />
+            <button
+              class="btn btn-warning font-weight-bold rounded-circle btn-lg mt-2"
+              id="select1"
+              onclick="invisible(); return false;"
+            >
+              Select
+            </button>
+          </form>
+        </article>
+        <p class="font-weight-bold p-4">VS</p>
+        <article class="card bg-danger">
+          <h2 class="card-title bg-warning p-1">Player 2 🧍</h2>
+          <form
+            class="card-body text-center"
+            id="user2"
+            style="visibility: hidden"
+          >
+            <label for="rock2">
+              <input
+                type="radio"
+                id="rock2"
+                value="rock"
+                name="user2"
+                aria-label="rock"
+              />
+              <i class="fas fa-hand-rock fa-2x"></i>
+            </label>
+            <label for="paper2">
+              <input
+                type="radio"
+                id="paper2"
+                value="paper"
+                name="user2"
+                aria-label="paper"
+              />
+              <i class="fas fa-hand-paper fa-2x"></i>
+            </label>
+            <label for="scissors2">
+              <input
+                type="radio"
+                id="scissors2"
+                value="scissors"
+                name="user2"
+                aria-label="scissors"
+              />
+              <i class="fas fa-hand-scissors fa-2x"></i>
+            </label>
+            <br />
+            <button
+              class="btn btn-warning font-weight-bold rounded-circle btn-lg mt-2"
+              id="select2"
+              onclick="result(); return false;"
+            >
+              Select
+            </button>
+          </form>
+        </article>
+      </section>
+      <i id="loader">"...Rock! Paper! Scissors!..."</i>
+    </main>
+    <footer class="mt-5">
+      <a href="https://panagiotis.netlify.app" class="link-warning">
+        <small><em>Visit my site for more projects</em></small>
+      </a>
+    </footer>
+    <script defer src="main.js"></script>
+    <script
+      defer
+      src="https://kit.fontawesome.com/a72b9e7ca4.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.19/lodash.min.js"
+      integrity="sha512-/A6lxqQJVUIMnx8B/bx/ERfeuJnqoWPJdUxN8aBj+tZYL35O998ry7UUGoN65PSUNlJNrqKZrDENi4i1c3zy4Q=="
+      crossorigin="anonymous"
+      async
+    ></script>
+  </body>
+</html>
