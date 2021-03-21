@@ -5,14 +5,14 @@ const Sc = document.getElementsByClassName('fa-hand-scissors')[1];
 let par = document.getElementById('result');
 let robot;
 const user = () => { //IT SHOWS THE USER'S CHOICE
-  for (let i = 0; i < radio.length; i++) {
-    if (radio[i].checked) {
-      return radio[i].value;
+   for (const choice of radio) {
+    if (choice.checked) {
+      return choice.value;
     }
   }
 };
 function computer() { //RANDOM CHOICE FOR COMPUTER
-  const randomNumber = _.random(3);
+  const randomNumber = Math.round(Math.random()*2);
   switch (randomNumber) {
     case 0:
       robot = "rock"
@@ -68,16 +68,16 @@ const radio2 = document.getElementsByName('user2');//USER2 CHOICE
 const select1 = document.getElementById('select1');
 const select2 = document.getElementById('select2');
 const user1 = () => { //IT SHOWS THE USER1'S CHOICE
-  for (let i = 0; i < radio1.length; i++) {
-    if (radio1[i].checked) {
+   for (const choice of radio1) {
+    if (choice.checked) {
       select1.style.color = 'green';
       select1.style.border = 'groove';
     }
   }
 };
 const user2 = () => { //IT SHOWS THE USER2'S CHOICE
-  for (let i = 0; i < radio2.length; i++) {
-    if (radio2[i].checked) {
+    for (const choice of radio2) {
+    if (choice.checked) {
       select2.style.color = 'green';
       select2.style.border = 'groove';
     }
