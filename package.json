@@ -1,0 +1,16 @@
+{
+  "name": "rock-paper-scissors",
+  "version": "3.0.0",
+  "description": "The classic game, AI-powered",
+  "source": "index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "keywords": [],
+  "author": "Panagiotis Panagiotakopoulos",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.14.4"
+  }
+}

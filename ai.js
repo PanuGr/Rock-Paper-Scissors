@@ -15,7 +15,7 @@ const aiGameState = {
  */
 async function getAIPrediction(playerHistory) {
   // Only make API call if we have sufficient history
-  if (playerHistory.length < 3) return null;
+  if (playerHistory.length < 2) return null;
   
   try {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
