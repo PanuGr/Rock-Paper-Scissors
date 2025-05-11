@@ -8,12 +8,10 @@ const gameState = {
     player1Choice: null,
     player2Choice: null
   },
-  ai: {
+  bot: {
     playerHistory: [],
     computerHistory: [],
-    difficulty: 'medium', // 'easy', 'medium', 'hard', 'adaptive'
-    adaptiveLevel: 0.5,   // 0-1 scale for adaptive difficulty
-    winRatio: 0.5        // Target win ratio for adaptive difficulty
+    difficulty: 'easy'
   }
 };
 
@@ -24,19 +22,6 @@ const playButton = document.getElementById('play-button');
 const resultDisplay = document.getElementById('result');
 const playerScoreDisplay = document.getElementById('player-score');
 const computerScoreDisplay = document.getElementById('computer-score');
-/* 
-// DOM Elements - Multiplayer
-const startButton = document.getElementById('start');
-const multiplayerSection = document.getElementById('multiplayer-section');
-const player1Form = document.getElementById('user1');
-const player2Form = document.getElementById('user2');
-const player1Choices = document.querySelectorAll('[name="user1"]');
-const player2Choices = document.querySelectorAll('[name="user2"]');
-const select1Button = document.getElementById('select1');
-const select2Button = document.getElementById('select2');
-const pvpResultDisplay = document.getElementById('pvp-result');
-const loader = document.getElementById('loader');
- */
 
 /**
  * Get the user's choice from radio buttons
@@ -57,95 +42,40 @@ const getRandomChoice = () => {
   return choices[randomIndex];
 };
 
-/**
- * Make API call to AI for prediction (if available)
- * @param {Array} playerHistory - Array of player's previous moves
- * @returns {Promise<string|null>} - AI's prediction of player's next move or null
- */
-async function getAIPrediction(playerHistory) {
+async function getPrediction(playerHistory) {
   // Only make prediction if we have sufficient history
   if (playerHistory.length < 3) return null;
 
-  // This is a simplified version that doesn't rely on external API
-  // Instead, we'll implement basic pattern recognition
-  
+  // A basic pattern recognition
+
   // Check for patterns like repeated moves
   const lastThree = playerHistory.slice(-3);
-  
+
   // If player used the same move three times in a row, they might do it again
   if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
     return lastThree[0];
   }
-  
+
   // Check for rotation pattern (rock->paper->scissors->rock)
   const rotationPattern = {
     'rock': 'paper',
     'paper': 'scissors',
     'scissors': 'rock'
   };
-  
-  if (lastThree[1] === rotationPattern[lastThree[0]] && 
-      lastThree[2] === rotationPattern[lastThree[1]]) {
+
+  if (lastThree[1] === rotationPattern[lastThree[0]] &&
+    lastThree[2] === rotationPattern[lastThree[1]]) {
     return rotationPattern[lastThree[2]];
   }
-  
+
   // If no pattern found, guess randomly with slight bias toward what they haven't played recently
   const choices = ['rock', 'paper', 'scissors'];
   const recentMoves = new Set(lastThree);
   const unusedMoves = choices.filter(move => !recentMoves.has(move));
-  
+
   if (unusedMoves.length > 0) {
     // Higher chance to play a move they haven't used recently
     return unusedMoves[Math.floor(Math.random() * unusedMoves.length)];
-  }
-  
-  // Fallback to random
-  return getRandomChoice();
-}
-
-/**
- * Make API call to MistralAI for prediction
- * @param {Array} playerHistory - Array of player's previous moves
- * @returns {Promise<string|null>} - AI's prediction of player's next move or null
- */
-async function getMistralAIPrediction(playerHistory) {
-  // Only make prediction if we have sufficient history
-  if (playerHistory.length < 3) return null;
-
-  try {
-    const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_MISTRAL_API_KEY'
-      },
-      body: JSON.stringify({
-        model: 'mistral-small', // Fast, low-cost model good for this task
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an AI that predicts patterns in Rock Paper Scissors gameplay. Analyze the sequence and predict the most likely next move.'
-          },
-          {
-            role: 'user',
-            content: `Here is a sequence of player moves in Rock Paper Scissors: ${playerHistory.join(', ')}. Predict what they will play next. Respond with only "rock", "paper", or "scissors".`
-          }
-        ],
-        max_tokens: 10
-      })
-    });
-    
-    const data = await response.json();
-    const prediction = data.choices[0].message.content.trim().toLowerCase();
-    
-    // Validate the response is one of our valid moves
-    if (['rock', 'paper', 'scissors'].includes(prediction)) {
-      return prediction;
-    }
-    return null;
-  } catch (error) {
-    console.error('Error getting MistralAI prediction:', error);
-    return null;
   }
 }
 
@@ -157,96 +87,42 @@ async function getComputerChoice() {
   const choices = ['rock', 'paper', 'scissors'];
   let computerChoice;
 
-  switch (gameState.ai.difficulty) {
+  switch (gameState.bot.difficulty) {
     case 'easy':
       computerChoice = getRandomChoice();
-      /* 
-      // Easy mode: 70% random, 30% makes losing moves
-      if (Math.random() < 0.3 && gameState.ai.playerHistory.length > 0) {
-        const lastPlayerMove = gameState.ai.playerHistory[gameState.ai.playerHistory.length - 1];
-        // Choose the move that loses to the player's last move
-        const losingMoveMap = {
-          'rock': 'scissors',  // Player's rock beats computer's scissors
-          'paper': 'rock',     // Player's paper beats computer's rock
-          'scissors': 'paper'  // Player's scissors beats computer's paper
-        };
-        computerChoice = losingMoveMap[lastPlayerMove];
-      } else {
-        // Random choice
-        computerChoice = getRandomChoice();
-      } */
       break;
 
     case 'medium':
-      // Medium: 50% random, 50% based on simple pattern recognition
-      if (Math.random() < 0.5 && gameState.ai.playerHistory.length >= 3) {
-        // Look for simple patterns like repetition
-        const lastThree = gameState.ai.playerHistory.slice(-3);
-        if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
-          // Player repeated same move 3 times, they might do it again
-          const expectedPlayerMove = lastThree[0];
-          // Choose the move that beats the expected player move
-          const winningMoveMap = {
-            'rock': 'paper',     // Computer's paper beats player's rock
-            'paper': 'scissors', // Computer's scissors beats player's paper
-            'scissors': 'rock'   // Computer's rock beats player's scissors
-          };
-          computerChoice = winningMoveMap[expectedPlayerMove];
-        } else {
-          computerChoice = getRandomChoice();
-        }
-      } else {
-        computerChoice = getRandomChoice();
+      // Look for simple patterns like repetition
+      const lastThree = gameState.bot.playerHistory.slice(-3);
+      if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
+        // Player repeated same move 3 times, they might do it again
+        const expectedPlayerMove = lastThree[0];
+        // Choose the move that beats the expected player move
+        const winningMoveMap = {
+          'rock': 'paper',     // Computer's paper beats player's rock
+          'paper': 'scissors', // Computer's scissors beats player's paper
+          'scissors': 'rock'   // Computer's rock beats player's scissors
+        };
+        computerChoice = winningMoveMap[expectedPlayerMove];
       }
       break;
 
     case 'hard':
-      // Hard: Use AI model to predict player's next move
-      const aiPrediction = await getAIPrediction(gameState.ai.playerHistory);
+      const prediction = await getPrediction(gameState.bot.playerHistory);
 
-      if (aiPrediction) {
+      if (prediction) {
         // Choose the move that beats the predicted player move
         const winningMoveMap = {
           'rock': 'paper',     // Computer's paper beats player's rock
           'paper': 'scissors', // Computer's scissors beats player's paper
           'scissors': 'rock'   // Computer's rock beats player's scissors
         };
-        computerChoice = winningMoveMap[aiPrediction];
-      } else {
-        // If no prediction available, fall back to medium difficulty
-        computerChoice = getRandomChoice();
+        computerChoice = winningMoveMap[prediction];
       }
       break;
-      
-    case 'adaptive':
-      // Adaptive: Use MistralAI to predict player's next move
-      const mistralPrediction = await getMistralAIPrediction(gameState.ai.playerHistory);
-      
-      if (mistralPrediction) {
-        // Choose the move that beats the predicted player move
-        const winningMoveMap = {
-          'rock': 'paper',     // Computer's paper beats player's rock
-          'paper': 'scissors', // Computer's scissors beats player's paper
-          'scissors': 'rock'   // Computer's rock beats player's scissors
-        };
-        computerChoice = winningMoveMap[mistralPrediction];
-      } else {
-        // If no prediction available, fall back to the local AI prediction
-        const localPrediction = await getAIPrediction(gameState.ai.playerHistory);
-        if (localPrediction) {
-          const winningMoveMap = {
-            'rock': 'paper',
-            'paper': 'scissors',
-            'scissors': 'rock'
-          };
-          computerChoice = winningMoveMap[localPrediction];
-        } else {
-          computerChoice = getRandomChoice();
-        }
-      }
-      break;
-      
     default:
+      console.log('return to default switch case');
       computerChoice = getRandomChoice();
   }
 
@@ -260,14 +136,14 @@ async function getComputerChoice() {
 const displayComputerChoice = (choice) => {
   // Hide all computer choice icons first
   computerChoiceIcons.forEach(icon => icon.style.visibility = 'hidden');
-  
+
   // Show the selected one
   const iconMap = {
     'rock': computerChoiceIcons[0],
     'paper': computerChoiceIcons[1],
     'scissors': computerChoiceIcons[2]
   };
-  
+
   if (iconMap[choice]) {
     iconMap[choice].style.visibility = 'visible';
   }
@@ -284,14 +160,14 @@ const determineWinner = (playerChoice, computerChoice) => {
   if (playerChoice === computerChoice) {
     return "It's a tie!";
   }
-  
+
   // Win conditions for player
   const playerWins = (
     (playerChoice === 'rock' && computerChoice === 'scissors') ||
     (playerChoice === 'paper' && computerChoice === 'rock') ||
     (playerChoice === 'scissors' && computerChoice === 'paper')
   );
-  
+
   if (playerWins) {
     gameState.singlePlayer.playerScore++;
     playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
@@ -311,24 +187,20 @@ async function playSinglePlayerGame() {
 
   if (!playerChoice) {
     resultDisplay.textContent = "Please select rock, paper, or scissors first!";
-    resultDisplay.classList.add('text-danger');
+    resultDisplay.classList.add('text-info');
     return;
   }
 
-  resultDisplay.classList.remove('text-danger');
-
-  // Add loading indicator for AI processing
-  playButton.disabled = true;
-  playButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Thinking...';
+  //resultDisplay.classList.remove('text-danger');
 
   // Record player's choice for pattern analysis
-  gameState.ai.playerHistory.push(playerChoice);
+  gameState.bot.playerHistory.push(playerChoice);
 
-  // Get computer's choice with AI enhancement
+  // Get computer's choice
   const computerChoice = await getComputerChoice();
 
   // Record computer's choice
-  gameState.ai.computerHistory.push(computerChoice);
+  gameState.bot.computerHistory.push(computerChoice);
 
   // Display computer's choice
   displayComputerChoice(computerChoice);
@@ -346,148 +218,12 @@ async function playSinglePlayerGame() {
   // Re-enable play button
   playButton.disabled = false;
   playButton.textContent = 'Play';
-  
+
   // Update dashboard if it exists
   if (typeof updateDashboard === 'function') {
     updateDashboard(playerChoice, computerChoice, result);
   }
 }
-
-/**
- * Start the multiplayer game
- */
-/* 
-const startMultiplayerGame = () => {
-  multiplayerSection.style.display = 'flex';
-  player1Form.reset();
-  player2Form.reset();
-  player1Form.style.visibility = 'visible';
-  player2Form.style.visibility = 'hidden';
-  select1Button.classList.remove('btn-success', 'border-3');
-  select2Button.classList.remove('btn-success', 'border-3');
-  pvpResultDisplay.textContent = '';
-  
-  // Reset multiplayer state
-  gameState.multiPlayer.player1Choice = null;
-  gameState.multiPlayer.player2Choice = null;
-};
- */
-/**
- * Handle player 1's selection
- * @param {Event} e - The click event
- */
-/* 
-const handlePlayer1Selection = (e) => {
-  e.preventDefault();
-  
-  const selectedChoice = Array.from(player1Choices).find(choice => choice.checked);
-  
-  if (!selectedChoice) {
-    pvpResultDisplay.textContent = "Player 1: Please select rock, paper, or scissors!";
-    pvpResultDisplay.classList.add('text-danger');
-    return;
-  }
-  
-  pvpResultDisplay.textContent = '';
-  pvpResultDisplay.classList.remove('text-danger');
-  
-  // Store player 1's choice
-  gameState.multiPlayer.player1Choice = selectedChoice.value;
-  
-  // Hide player 1's form and show player 2's
-  player1Form.style.visibility = 'hidden';
-  player2Form.style.visibility = 'visible';
-  
-  // Visual feedback that selection was made
-  select1Button.classList.add('btn-success', 'border-3');
-};
- */
-/**
- * Determine the winner for the multiplayer game
- * @param {string} choice1 - Player 1's choice
- * @param {string} choice2 - Player 2's choice
- * @returns {string} The result message
- */
-/* 
-const determineMultiplayerWinner = (choice1, choice2) => {
-  // Tie case
-  if (choice1 === choice2) {
-    return "It's a tie!";
-  }
-  
-  // Win conditions for player 1
-  const player1Wins = (
-    (choice1 === 'rock' && choice2 === 'scissors') ||
-    (choice1 === 'paper' && choice2 === 'rock') ||
-    (choice1 === 'scissors' && choice2 === 'paper')
-  );
-  
-  if (player1Wins) {
-    return "Player 1 wins!";
-  } else {
-    return "Player 2 wins!";
-  }
-};
- */
-/**
- * Handle player 2's selection and determine the winner
- * @param {Event} e - The click event
- */
-/* 
-const handlePlayer2Selection = (e) => {
-  e.preventDefault();
-  
-  const selectedChoice = Array.from(player2Choices).find(choice => choice.checked);
-  
-  if (!selectedChoice) {
-    pvpResultDisplay.textContent = "Player 2: Please select rock, paper, or scissors!";
-    pvpResultDisplay.classList.add('text-danger');
-    return;
-  }
-  
-  pvpResultDisplay.classList.remove('text-danger');
-  
-  // Store player 2's choice
-  gameState.multiPlayer.player2Choice = selectedChoice.value;
-  
-  // Visual feedback that selection was made
-  select2Button.classList.add('btn-success', 'border-3');
-  
-  // Hide game section and show loader
-  startButton.style.display = 'none';
-  multiplayerSection.style.display = 'none';
-  loader.style.display = 'block';
-  
-  // Show results after a short delay
-  setTimeout(() => {
-    const result = determineMultiplayerWinner(
-      gameState.multiPlayer.player1Choice,
-      gameState.multiPlayer.player2Choice
-    );
-    
-    // Hide loader and display result
-    loader.style.display = 'none';
-    pvpResultDisplay.textContent = result;
-    pvpResultDisplay.classList.add('result-animation');
-    
-    // Show start button again
-    startButton.style.display = 'inline-block';
-    
-    // Wait a bit before showing the game interface again
-    setTimeout(() => {
-      multiplayerSection.style.display = 'flex';
-      player1Form.style.visibility = 'visible';
-      player2Form.style.visibility = 'hidden';
-      player1Form.reset();
-      player2Form.reset();
-      select1Button.classList.remove('btn-success', 'border-3');
-      select2Button.classList.remove('btn-success', 'border-3');
-      pvpResultDisplay.classList.remove('result-animation');
-    }, 2000);
-  }, 2000);
-};
- */
-
 /**
  * Add visual feedback for choices when selected
  * @param {NodeList} choices - Radio button elements
@@ -502,7 +238,7 @@ const addChoiceSelectionFeedback = (choices) => {
           icon.classList.remove('selected');
         });
       }
-      
+
       // Add selected class to the chosen option
       const selectedIcon = choice.nextElementSibling;
       if (selectedIcon) {
@@ -533,23 +269,17 @@ function addDifficultySelector() {
 
   // Add event listener
   document.getElementById('difficulty-select').addEventListener('change', (e) => {
-    gameState.ai.difficulty = e.target.value;
+    gameState.bot.difficulty = e.target.value;
 
-    // Reset adaptive level when changing difficulty
-    if (gameState.ai.difficulty === 'adaptive') {
-      gameState.ai.adaptiveLevel = 0.5;
-    }
-    
     // Reset game history for new difficulty
-    if (confirm("Reset game scores for new difficulty level?")) {
-      gameState.singlePlayer.playerScore = 0;
-      gameState.singlePlayer.computerScore = 0;
-      gameState.ai.playerHistory = [];
-      gameState.ai.computerHistory = [];
-      playerScoreDisplay.textContent = '0';
-      computerScoreDisplay.textContent = '0';
-      resultDisplay.textContent = '';
-    }
+    gameState.singlePlayer.playerScore = 0;
+    gameState.singlePlayer.computerScore = 0;
+    gameState.bot.playerHistory = [];
+    gameState.bot.computerHistory = [];
+    playerScoreDisplay.textContent = '0';
+    computerScoreDisplay.textContent = '0';
+    resultDisplay.textContent = '';
+
   });
 }
 
@@ -561,13 +291,13 @@ function addDashboardButton() {
   dashboardButton.id = 'dashboard-button';
   dashboardButton.className = 'btn btn-info btn-sm ms-3';
   dashboardButton.textContent = 'Show AI Stats';
-  
+
   // Find the difficulty select and add the button next to it
   const difficultySelect = document.getElementById('difficulty-select');
   if (difficultySelect) {
     difficultySelect.parentNode.appendChild(dashboardButton);
   }
-  
+
   // Add event listener to open dashboard
   dashboardButton.addEventListener('click', toggleDashboard);
 }
@@ -578,7 +308,7 @@ function addDashboardButton() {
 function toggleDashboard() {
   const dashboard = document.getElementById('ai-dashboard');
   const dashboardButton = document.getElementById('dashboard-button');
-  
+
   if (dashboard) {
     const isVisible = dashboard.style.display !== 'none';
     dashboard.style.display = isVisible ? 'none' : 'block';
@@ -645,18 +375,18 @@ function createDashboard() {
       <button id="reset-stats" class="btn btn-outline-danger btn-sm">Reset Statistics</button>
     </div>
   `;
-  
+
   // Add dashboard to the page after the scores
   const scoreDisplay = document.querySelector('.score-display');
   scoreDisplay.parentNode.insertBefore(dashboard, scoreDisplay.nextSibling);
-  
+
   // Add event listener for reset button
   document.getElementById('reset-stats').addEventListener('click', () => {
-    gameState.ai.playerHistory = [];
-    gameState.ai.computerHistory = [];
+    gameState.bot.playerHistory = [];
+    gameState.bot.computerHistory = [];
     updateDashboard();
   });
-  
+
   // Initial update
   updateDashboard();
 }
@@ -667,39 +397,39 @@ function createDashboard() {
 function updateDashboard(playerMove, computerMove, result) {
   const dashboard = document.getElementById('ai-dashboard');
   if (!dashboard) return;
-  
-  const totalGames = gameState.ai.playerHistory.length;
+
+  const totalGames = gameState.bot.playerHistory.length;
   document.getElementById('games-played').textContent = totalGames;
-  
+
   // Calculate move percentages
   const moveCount = {
-    rock: gameState.ai.playerHistory.filter(move => move === 'rock').length,
-    paper: gameState.ai.playerHistory.filter(move => move === 'paper').length,
-    scissors: gameState.ai.playerHistory.filter(move => move === 'scissors').length
+    rock: gameState.bot.playerHistory.filter(move => move === 'rock').length,
+    paper: gameState.bot.playerHistory.filter(move => move === 'paper').length,
+    scissors: gameState.bot.playerHistory.filter(move => move === 'scissors').length
   };
-  
+
   if (totalGames > 0) {
     document.getElementById('rock-percent').textContent = `${Math.round(moveCount.rock / totalGames * 100)}%`;
     document.getElementById('paper-percent').textContent = `${Math.round(moveCount.paper / totalGames * 100)}%`;
     document.getElementById('scissors-percent').textContent = `${Math.round(moveCount.scissors / totalGames * 100)}%`;
-    
+
     // Win rate
     const winRate = gameState.singlePlayer.playerScore / totalGames * 100;
     document.getElementById('win-rate').textContent = `${Math.round(winRate)}%`;
     document.getElementById('win-progress').style.width = `${winRate}%`;
-    
+
     // AI Analysis
     if (totalGames >= 5) {
       let analysis = "";
-      
+
       // Most used move
       const mostUsedMove = Object.entries(moveCount).sort((a, b) => b[1] - a[1])[0][0];
       analysis += `You favor ${mostUsedMove} (${Math.round(moveCount[mostUsedMove] / totalGames * 100)}% of moves). `;
-      
+
       // Pattern detection
       if (totalGames >= 10) {
         // Check for alternating patterns
-        const lastFiveMoves = gameState.ai.playerHistory.slice(-5);
+        const lastFiveMoves = gameState.bot.playerHistory.slice(-5);
         const uniqueMoves = new Set(lastFiveMoves);
         if (uniqueMoves.size === 1) {
           analysis += "You're repeating the same move. Try mixing it up! ";
@@ -709,15 +439,15 @@ function updateDashboard(playerMove, computerMove, result) {
         ) {
           analysis += "You're alternating in a predictable pattern. ";
         }
-        
+
         // If too predictable or too successful
         if (winRate > 60) {
-          analysis += "You're doing well against the AI. Maybe try a harder difficulty?";
+          analysis += "You're doing well against the bot. Maybe try a harder difficulty?";
         } else if (winRate < 30) {
           analysis += "The AI seems to be predicting your moves. Try being less predictable.";
         }
       }
-      
+
       document.getElementById('ai-analysis').textContent = analysis;
     }
   }
@@ -728,13 +458,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
   playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
   computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
-  
+
   // Add the difficulty selector to the UI
   addDifficultySelector();
-  
+
   // Add dashboard button
   addDashboardButton();
-  
+
   // Replace the original play button event listener
   playButton.removeEventListener('click', playSinglePlayerGame);
   playButton.addEventListener('click', playSinglePlayerGame);
