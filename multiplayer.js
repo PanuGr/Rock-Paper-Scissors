@@ -140,3 +140,9 @@ const handlePlayer2Selection = (e) => {
         }, 2000);
     }, 2000);
 };
+//Event Listeners
+startButton.addEventListener('click', startMultiplayerGame);
+select1Button.addEventListener('click', handlePlayer1Selection);
+select2Button.addEventListener('click', handlePlayer2Selection);
+addChoiceSelectionFeedback(player1Choices);
+addChoiceSelectionFeedback(player2Choices);

@@ -247,12 +247,8 @@ const addChoiceSelectionFeedback = (choices) => {
     });
   });
 };
-
-// Add event listener
-document.getElementById('difficulty-select').addEventListener('change', (e) => {
+function reset(e) {
   gameState.bot.difficulty = e.target.value;
-  console.log(gameState.bot.difficulty);
-  // Reset game history for new difficulty
   gameState.singlePlayer.playerScore = 0;
   gameState.singlePlayer.computerScore = 0;
   gameState.bot.playerHistory = [];
@@ -260,11 +256,18 @@ document.getElementById('difficulty-select').addEventListener('change', (e) => {
   playerScoreDisplay.textContent = '0';
   computerScoreDisplay.textContent = '0';
   resultDisplay.textContent = '';
+  document.getElementById('rock-percent').textContent = "0%";
+  document.getElementById('paper-percent').textContent = "0%";
+  document.getElementById('scissors-percent').textContent = '0%';
+  document.getElementById('win-rate').textContent = "0%";
+  document.getElementById('win-progress').style.width = "0%";
+  updateDashboard();
+}
+// Reset game history for new difficulty
+document.getElementById('difficulty-select').addEventListener('change', reset);
 
-});
-
-  // Add event listener to open dashboard
-  document.getElementById("dashboard-button").addEventListener('click', toggleDashboard);
+// Add event listener to open dashboard
+document.getElementById("dashboard-button").addEventListener('click', toggleDashboard);
 
 
 /**
@@ -336,21 +339,11 @@ function createDashboard() {
         </div>
       </div>
     </div>
-    <div class="mt-3">
-      <button id="reset-stats" class="btn btn-outline-danger btn-sm">Reset Statistics</button>
-    </div>
   `;
 
   // Add dashboard to the page after the scores
   const scoreDisplay = document.querySelector('.score-display');
-  scoreDisplay.parentNode.insertBefore(dashboard, scoreDisplay.nextSibling);
-
-  // Add event listener for reset button
-  document.getElementById('reset-stats').addEventListener('click', () => {
-    gameState.bot.playerHistory = [];
-    gameState.bot.computerHistory = [];
-    updateDashboard();
-  });
+  scoreDisplay.parentNode.insertBefore(dashboard, resultDisplay.nextSibling);
 
   // Initial update
   updateDashboard();
@@ -427,14 +420,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Replace the original play button event listener
   playButton.removeEventListener('click', playSinglePlayerGame);
   playButton.addEventListener('click', playSinglePlayerGame);
-  /* 
-  // Other event listeners
-  startButton.addEventListener('click', startMultiplayerGame);
-  select1Button.addEventListener('click', handlePlayer1Selection);
-  select2Button.addEventListener('click', handlePlayer2Selection);
+
   // Add visual feedback for choices
   addChoiceSelectionFeedback(playerChoices);
-  addChoiceSelectionFeedback(player1Choices);
-  addChoiceSelectionFeedback(player2Choices);
-  */
+
 });
