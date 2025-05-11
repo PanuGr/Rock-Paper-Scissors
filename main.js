@@ -268,18 +268,12 @@ function reset(e) {
   updateDashboard();
   // Remove 'selected' class from player choices icons
   document.querySelectorAll('[name="user"]').forEach(choice => {
- choice.nextElementSibling.classList.remove('selected');
+    choice.nextElementSibling.classList.remove('selected');
   });
   // Hide and remove 'selected' class from computer choice icons
- computerChoiceIcons.forEach(icon => icon.style.visibility = 'hidden');
- computerChoiceIcons.forEach(icon => icon.classList.remove('selected'));
+  computerChoiceIcons.forEach(icon => icon.style.visibility = 'hidden');
+  computerChoiceIcons.forEach(icon => icon.classList.remove('selected'));
 }
-// Reset game history for new difficulty
-document.getElementById('difficulty-select').addEventListener('change', reset);
-
-// Add event listener to open dashboard
-document.getElementById("dashboard-button").addEventListener('click', toggleDashboard);
-
 
 /**
  * Toggle Dashboard visibility
@@ -427,12 +421,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
   playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
   computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
-
   // Replace the original play button event listener
   playButton.removeEventListener('click', playSinglePlayerGame);
   playButton.addEventListener('click', playSinglePlayerGame);
-
   // Add visual feedback for choices
   addChoiceSelectionFeedback(playerChoices);
-
+  // Reset game history for new difficulty
+  document.getElementById('difficulty-select').addEventListener('change', reset);
+  // Add event listener to open dashboard
+  document.getElementById("dashboard-button").addEventListener('click', toggleDashboard);
 });
