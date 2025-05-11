@@ -248,59 +248,24 @@ const addChoiceSelectionFeedback = (choices) => {
   });
 };
 
-/**
- * Add difficulty selector to the UI
- */
-function addDifficultySelector() {
-  const difficultySelector = document.createElement('div');
-  difficultySelector.className = 'mt-4';
-  difficultySelector.innerHTML = `
-    <label for="difficulty-select" class="form-label text-light">Difficulty:</label>
-    <select id="difficulty-select" class="form-select w-auto mx-auto">
-      <option value="easy">Easy</option>
-      <option value="medium" selected>Medium</option>
-      <option value="hard">Hard (AI-powered)</option>
-      <option value="adaptive">Adaptive (AI-powered)</option>
-    </select>
-  `;
+// Add event listener
+document.getElementById('difficulty-select').addEventListener('change', (e) => {
+  gameState.bot.difficulty = e.target.value;
+  console.log(gameState.bot.difficulty);
+  // Reset game history for new difficulty
+  gameState.singlePlayer.playerScore = 0;
+  gameState.singlePlayer.computerScore = 0;
+  gameState.bot.playerHistory = [];
+  gameState.bot.computerHistory = [];
+  playerScoreDisplay.textContent = '0';
+  computerScoreDisplay.textContent = '0';
+  resultDisplay.textContent = '';
 
-  // Insert before the play button
-  playButton.parentNode.insertBefore(difficultySelector, playButton);
-
-  // Add event listener
-  document.getElementById('difficulty-select').addEventListener('change', (e) => {
-    gameState.bot.difficulty = e.target.value;
-
-    // Reset game history for new difficulty
-    gameState.singlePlayer.playerScore = 0;
-    gameState.singlePlayer.computerScore = 0;
-    gameState.bot.playerHistory = [];
-    gameState.bot.computerHistory = [];
-    playerScoreDisplay.textContent = '0';
-    computerScoreDisplay.textContent = '0';
-    resultDisplay.textContent = '';
-
-  });
-}
-
-/**
- * Add AI Dashboard button
- */
-function addDashboardButton() {
-  const dashboardButton = document.createElement('button');
-  dashboardButton.id = 'dashboard-button';
-  dashboardButton.className = 'btn btn-info btn-sm ms-3';
-  dashboardButton.textContent = 'Show AI Stats';
-
-  // Find the difficulty select and add the button next to it
-  const difficultySelect = document.getElementById('difficulty-select');
-  if (difficultySelect) {
-    difficultySelect.parentNode.appendChild(dashboardButton);
-  }
+});
 
   // Add event listener to open dashboard
-  dashboardButton.addEventListener('click', toggleDashboard);
-}
+  document.getElementById("dashboard-button").addEventListener('click', toggleDashboard);
+
 
 /**
  * Toggle AI Dashboard visibility
@@ -458,12 +423,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
   playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
   computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
-
-  // Add the difficulty selector to the UI
-  addDifficultySelector();
-
-  // Add dashboard button
-  addDashboardButton();
 
   // Replace the original play button event listener
   playButton.removeEventListener('click', playSinglePlayerGame);
