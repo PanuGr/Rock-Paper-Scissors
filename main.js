@@ -14,7 +14,6 @@ const gameState = {
     difficulty: 'easy'
   }
 };
-
 // DOM Elements - Single Player
 const playerChoices = document.querySelectorAll('[name="user"]');
 const computerChoiceIcons = Array.from(document.querySelectorAll('.computer-choice'));
@@ -84,39 +83,42 @@ async function getPrediction(playerHistory) {
  * @returns {Promise<string>} - The computer's move
  */
 async function getComputerChoice() {
-  const choices = ['rock', 'paper', 'scissors'];
-  let computerChoice;
+  let computerChoice = getRandomChoice(); // Always start with a random choice
 
   switch (gameState.bot.difficulty) {
     case 'easy':
-      computerChoice = getRandomChoice();
       break;
 
     case 'medium':
       // Look for simple patterns like repetition
       const lastThree = gameState.bot.playerHistory.slice(-3);
-      if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
-        // Player repeated same move 3 times, they might do it again
-        const expectedPlayerMove = lastThree[0];
-        // Choose the move that beats the expected player move
-        const winningMoveMap = {
-          'rock': 'paper',     // Computer's paper beats player's rock
-          'paper': 'scissors', // Computer's scissors beats player's paper
-          'scissors': 'rock'   // Computer's rock beats player's scissors
-        };
-        computerChoice = winningMoveMap[expectedPlayerMove];
+      if (gameState.bot.playerHistory.length >= 3) { // Only attempt pattern if history exists
+        if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
+          // Player repeated same move 3 times, they might do it again
+          const expectedPlayerMove = lastThree[0];
+          // Choose the move that beats the expected player move
+          const winningMoveMap = {
+            'rock': 'paper', // Computer's paper beats player's rock
+            'paper': 'scissors', // Computer's scissors beats player's paper
+            'scissors': 'rock' // Computer's rock beats player's scissors
+          };
+          computerChoice = winningMoveMap[expectedPlayerMove];
+        }
       }
       break;
 
     case 'hard':
-      const prediction = await getPrediction(gameState.bot.playerHistory);
+      if (gameState.bot.playerHistory.length >= 3) { // Only attempt prediction if history exists
+        const prediction = await getPrediction(gameState.bot.playerHistory);
 
-      if (prediction) {
-        // Choose the move that beats the predicted player move
-        const winningMoveMap = {
-          'rock': 'paper',     // Computer's paper beats player's rock
-          'paper': 'scissors', // Computer's scissors beats player's paper
-          'scissors': 'rock'   // Computer's rock beats player's scissors
+        if (prediction) {
+          // Choose the move that beats the predicted player move
+          const winningMoveMap = {
+            'rock': 'paper', // Computer's paper beats player's rock
+            'paper': 'scissors', // Computer's scissors beats player's paper
+            'scissors': 'rock' // Computer's rock beats player's scissors
+          };
+          computerChoice = winningMoveMap[prediction];
         };
         computerChoice = winningMoveMap[prediction];
       }
@@ -256,12 +258,21 @@ function reset(e) {
   playerScoreDisplay.textContent = '0';
   computerScoreDisplay.textContent = '0';
   resultDisplay.textContent = '';
-  document.getElementById('rock-percent').textContent = "0%";
-  document.getElementById('paper-percent').textContent = "0%";
-  document.getElementById('scissors-percent').textContent = '0%';
-  document.getElementById('win-rate').textContent = "0%";
-  document.getElementById('win-progress').style.width = "0%";
+  if (document.getElementById('dashboard')) {
+    document.getElementById('rock-percent').textContent = "0%";
+    document.getElementById('paper-percent').textContent = "0%";
+    document.getElementById('scissors-percent').textContent = '0%';
+    document.getElementById('win-rate').textContent = "0%";
+    document.getElementById('win-progress').style.width = "0%";
+  }
   updateDashboard();
+  // Remove 'selected' class from player choices icons
+  document.querySelectorAll('[name="user"]').forEach(choice => {
+ choice.nextElementSibling.classList.remove('selected');
+  });
+  // Hide and remove 'selected' class from computer choice icons
+ computerChoiceIcons.forEach(icon => icon.style.visibility = 'hidden');
+ computerChoiceIcons.forEach(icon => icon.classList.remove('selected'));
 }
 // Reset game history for new difficulty
 document.getElementById('difficulty-select').addEventListener('change', reset);
@@ -271,28 +282,28 @@ document.getElementById("dashboard-button").addEventListener('click', toggleDash
 
 
 /**
- * Toggle AI Dashboard visibility
+ * Toggle Dashboard visibility
  */
 function toggleDashboard() {
-  const dashboard = document.getElementById('ai-dashboard');
+  const dashboard = document.getElementById('dashboard');
   const dashboardButton = document.getElementById('dashboard-button');
 
   if (dashboard) {
     const isVisible = dashboard.style.display !== 'none';
     dashboard.style.display = isVisible ? 'none' : 'block';
-    dashboardButton.textContent = isVisible ? 'Show AI Stats' : 'Hide AI Stats';
+    dashboardButton.textContent = isVisible ? 'Show Stats' : 'Hide Stats';
   } else {
     createDashboard();
-    dashboardButton.textContent = 'Hide AI Stats';
+    dashboardButton.textContent = 'Hide Stats';
   }
 }
 
 /**
- * Create a simple AI Dashboard
+ * Create a simple Dashboard
  */
 function createDashboard() {
   const dashboard = document.createElement('div');
-  dashboard.id = 'ai-dashboard';
+  dashboard.id = 'dashboard';
   dashboard.className = 'mt-4 p-3 bg-dark rounded';
   dashboard.innerHTML = `
     <h4 class="text-light">Game Analysis</h4>
@@ -334,7 +345,7 @@ function createDashboard() {
         <div class="card bg-dark border-info text-light">
           <div class="card-body">
             <h5 class="card-title">Analysis</h5>
-            <p id="ai-analysis" class="small">Play more games for AI analysis</p>
+            <p id="analysis" class="small">Play more games for game analysis</p>
           </div>
         </div>
       </div>
@@ -350,10 +361,10 @@ function createDashboard() {
 }
 
 /**
- * Update the AI Dashboard with latest statistics
+ * Update the Dashboard with latest statistics
  */
 function updateDashboard(playerMove, computerMove, result) {
-  const dashboard = document.getElementById('ai-dashboard');
+  const dashboard = document.getElementById('dashboard');
   if (!dashboard) return;
 
   const totalGames = gameState.bot.playerHistory.length;
@@ -376,7 +387,7 @@ function updateDashboard(playerMove, computerMove, result) {
     document.getElementById('win-rate').textContent = `${Math.round(winRate)}%`;
     document.getElementById('win-progress').style.width = `${winRate}%`;
 
-    // AI Analysis
+    // Analysis
     if (totalGames >= 5) {
       let analysis = "";
 
@@ -406,7 +417,7 @@ function updateDashboard(playerMove, computerMove, result) {
         }
       }
 
-      document.getElementById('ai-analysis').textContent = analysis;
+      document.getElementById('analysis').textContent = analysis;
     }
   }
 }
