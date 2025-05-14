@@ -88,41 +88,43 @@ async function getComputerChoice() {
   switch (gameState.bot.difficulty) {
     case 'easy':
       break;
-
-    case 'medium':
-      // Look for simple patterns like repetition
-      const lastThree = gameState.bot.playerHistory.slice(-3);
-      if (gameState.bot.playerHistory.length >= 3) { // Only attempt pattern if history exists
-        if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
-          // Player repeated same move 3 times, they might do it again
-          const expectedPlayerMove = lastThree[0];
-          // Choose the move that beats the expected player move
-          const winningMoveMap = {
-            'rock': 'paper', // Computer's paper beats player's rock
-            'paper': 'scissors', // Computer's scissors beats player's paper
-            'scissors': 'rock' // Computer's rock beats player's scissors
-          };
-          computerChoice = winningMoveMap[expectedPlayerMove];
+      case 'hard':
+        if (gameState.bot.playerHistory.length >= 3) {
+          const lastThree = gameState.bot.playerHistory.slice(-3);
+          let computerChoice = null;
+  
+          // Attempt prediction first
+          const prediction = await getPrediction(gameState.bot.playerHistory);
+          if (prediction) {
+            console.log('prediction');
+            const winningMoveMap = {
+              'rock': 'paper',
+              'paper': 'scissors',
+              'scissors': 'rock'
+            };
+            computerChoice = winningMoveMap[prediction];
+          } else if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
+            // Fallback to pattern recognition if prediction fails
+            const expectedPlayerMove = lastThree[0];
+            console.log('basci prediction')
+            const winningMoveMap = {
+              'rock': 'paper',
+              'paper': 'scissors',
+              'scissors': 'rock'
+            };
+            computerChoice = winningMoveMap[expectedPlayerMove];
+          }
+  
+          // If neither prediction nor pattern recognition yielded a choice, fall back to random
+          if (!computerChoice) {
+            console.log('prediction failed, back to random');
+            computerChoice = getRandomChoice();
+          }
+  
+          return computerChoice; // Ensure a choice is returned
         }
-      }
-      break;
-
-    case 'hard':
-      if (gameState.bot.playerHistory.length >= 3) { // Only attempt prediction if history exists
-        const prediction = await getPrediction(gameState.bot.playerHistory);
-
-        if (prediction) {
-          // Choose the move that beats the predicted player move
-          const winningMoveMap = {
-            'rock': 'paper', // Computer's paper beats player's rock
-            'paper': 'scissors', // Computer's scissors beats player's paper
-            'scissors': 'rock' // Computer's rock beats player's scissors
-          };
-          computerChoice = winningMoveMap[prediction];
-        };
-      }
-      break;
-    default:
+        break;
+      default:
       console.log('return to default switch case');
       computerChoice = getRandomChoice();
   }
