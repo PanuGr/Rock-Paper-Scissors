@@ -2,11 +2,14 @@
 const gameState = {
   singlePlayer: {
     playerScore: 0,
-    computerScore: 0
+    computerScore: 0,
+    playerName: "Player"
   },
   multiPlayer: {
     player1Choice: null,
-    player2Choice: null
+    player2Choice: null,
+    player1Name: "Player 1",
+    player2Name: "Player 2"
   },
   bot: {
     playerHistory: [],
@@ -88,43 +91,43 @@ async function getComputerChoice() {
   switch (gameState.bot.difficulty) {
     case 'easy':
       break;
-      case 'hard':
-        if (gameState.bot.playerHistory.length >= 3) {
-          const lastThree = gameState.bot.playerHistory.slice(-3);
-          let computerChoice = null;
-  
-          // Attempt prediction first
-          const prediction = await getPrediction(gameState.bot.playerHistory);
-          if (prediction) {
-            console.log('prediction');
-            const winningMoveMap = {
-              'rock': 'paper',
-              'paper': 'scissors',
-              'scissors': 'rock'
-            };
-            computerChoice = winningMoveMap[prediction];
-          } else if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
-            // Fallback to pattern recognition if prediction fails
-            const expectedPlayerMove = lastThree[0];
-            console.log('basci prediction')
-            const winningMoveMap = {
-              'rock': 'paper',
-              'paper': 'scissors',
-              'scissors': 'rock'
-            };
-            computerChoice = winningMoveMap[expectedPlayerMove];
-          }
-  
-          // If neither prediction nor pattern recognition yielded a choice, fall back to random
-          if (!computerChoice) {
-            console.log('prediction failed, back to random');
-            computerChoice = getRandomChoice();
-          }
-  
-          return computerChoice; // Ensure a choice is returned
+    case 'hard':
+      if (gameState.bot.playerHistory.length >= 3) {
+        const lastThree = gameState.bot.playerHistory.slice(-3);
+        let computerChoice = null;
+
+        // Attempt prediction first
+        const prediction = await getPrediction(gameState.bot.playerHistory);
+        if (prediction) {
+          console.log('prediction');
+          const winningMoveMap = {
+            'rock': 'paper',
+            'paper': 'scissors',
+            'scissors': 'rock'
+          };
+          computerChoice = winningMoveMap[prediction];
+        } else if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
+          // Fallback to pattern recognition if prediction fails
+          const expectedPlayerMove = lastThree[0];
+          console.log('basci prediction')
+          const winningMoveMap = {
+            'rock': 'paper',
+            'paper': 'scissors',
+            'scissors': 'rock'
+          };
+          computerChoice = winningMoveMap[expectedPlayerMove];
         }
-        break;
-      default:
+
+        // If neither prediction nor pattern recognition yielded a choice, fall back to random
+        if (!computerChoice) {
+          console.log('prediction failed, back to random');
+          computerChoice = getRandomChoice();
+        }
+
+        return computerChoice; // Ensure a choice is returned
+      }
+      break;
+    default:
       console.log('return to default switch case');
       computerChoice = getRandomChoice();
   }
@@ -151,6 +154,29 @@ const displayComputerChoice = (choice) => {
     iconMap[choice].style.visibility = 'visible';
   }
 };
+//Update player name when input changes
+function updatePlayerName() {
+  const nameInput = document.getElementById('player-name');
+  if (nameInput) {
+    gameState.singlePlayer.playerName = nameInput.value || "Player";
+    console.log(gameState.singlePlayer.playerName);
+    // Update UI elements that display the player name
+    const playerHeader = document.querySelector('.game-card h3');
+    if (playerHeader) {
+      playerHeader.innerHTML = `${gameState.singlePlayer.playerName} 🧍`;
+    }
+    // Update score display
+    updateScoreDisplay();
+  }
+}
+
+//Update the score display with current names
+function updateScoreDisplay() {
+  const playerScoreElement = document.querySelector('.score-display div:first-child');
+  if (playerScoreElement) {
+    playerScoreElement.textContent = `${gameState.singlePlayer.playerName}: ${gameState.singlePlayer.playerScore}`;
+  }
+}
 
 /**
  * Determine the winner of the game
@@ -171,13 +197,18 @@ const determineWinner = (playerChoice, computerChoice) => {
     (playerChoice === 'scissors' && computerChoice === 'paper')
   );
 
+
+
   if (playerWins) {
     gameState.singlePlayer.playerScore++;
-    playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
-    return "You win!";
+    updateScoreDisplay(); // Update display instead of directly modifying text
+    return `${gameState.singlePlayer.playerName} wins!`;
+    /* playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
+    return "You win!"; */
   } else {
     gameState.singlePlayer.computerScore++;
-    computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
+    updateScoreDisplay();
+    //computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
     return "Computer wins!";
   }
 };
@@ -256,9 +287,11 @@ function reset(e) {
   gameState.singlePlayer.computerScore = 0;
   gameState.bot.playerHistory = [];
   gameState.bot.computerHistory = [];
-  playerScoreDisplay.textContent = '0';
+  updateScoreDisplay();
+  /* playerScoreDisplay.textContent = '0';
   computerScoreDisplay.textContent = '0';
-  resultDisplay.textContent = '';
+  resultDisplay.textContent = ''; */
+
   if (document.getElementById('dashboard')) {
     document.getElementById('rock-percent').textContent = "0%";
     document.getElementById('paper-percent').textContent = "0%";
@@ -422,6 +455,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
   playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
   computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
+  // Add player name input event listener
+  const playerNameInput = document.getElementById('player-name');
+  if (playerNameInput) {
+    playerNameInput.addEventListener('change', updatePlayerName);
+    playerNameInput.addEventListener('blur', updatePlayerName);
+  }
   // Replace the original play button event listener
   playButton.removeEventListener('click', playSinglePlayerGame);
   playButton.addEventListener('click', playSinglePlayerGame);
