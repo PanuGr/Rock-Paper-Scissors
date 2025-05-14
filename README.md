@@ -26,8 +26,8 @@ In this project, I've been working a lot with if-statements, switch functions an
 
 1. Add customizable player names  
 2. Include game history tracking (scoreboard)  
-3. Create difficulty levels 
-4. Analyze player patterns (Dashboard)
+3. [x] Create difficulty levels 
+4. [x] Analyze player patterns (Dashboard)
 
 ### Technical Improvements
 
