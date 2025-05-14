@@ -1,5 +1,5 @@
 //Update player name when input changes
-function updatePlayerName() {
+function updatePlayerName(gameState) {
   const nameInput = document.getElementById('player-name');
   if (nameInput) {
     gameState.singlePlayer.playerName = nameInput.value || "Player";
@@ -10,14 +10,16 @@ function updatePlayerName() {
       playerHeader.innerHTML = `${gameState.singlePlayer.playerName} 🧍`;
     }
     // Update score display
-    updateScoreDisplay();
+    updatePlayerScoreDisplay(gameState);
   }
 }
 
 //Update the score display with current names
-function updateScoreDisplay() {
+function updatePlayerScoreDisplay(gameState) {
   const playerScoreElement = document.querySelector('.score-display div:first-child');
   if (playerScoreElement) {
     playerScoreElement.textContent = `${gameState.singlePlayer.playerName}: ${gameState.singlePlayer.playerScore}`;
   }
 }
+
+export { updatePlayerName, updatePlayerScoreDisplay };

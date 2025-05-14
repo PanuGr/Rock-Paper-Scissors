@@ -1,3 +1,4 @@
+import { updatePlayerName, updatePlayerScoreDisplay } from './modules/playerName.js';
 // Game state - Combined from both files
 const gameState = {
   singlePlayer: {
@@ -154,28 +155,6 @@ const displayComputerChoice = (choice) => {
     iconMap[choice].style.visibility = 'visible';
   }
 };
-//Update player name when input changes
-function updatePlayerName() {
-  const nameInput = document.getElementById('player-name');
-  if (nameInput) {
-    gameState.singlePlayer.playerName = nameInput.value || "Player";
-    // Update UI elements that display the player name
-    const playerHeader = document.querySelector('.game-card h3');
-    if (playerHeader) {
-      playerHeader.innerHTML = `${gameState.singlePlayer.playerName} 🧍`;
-    }
-    // Update score display
-    updatePlayerScoreDisplay();
-  }
-}
-
-//Update the score display with current names
-function updatePlayerScoreDisplay() {
-  const playerScoreElement = document.querySelector('.score-display div:first-child');
-  if (playerScoreElement) {
-    playerScoreElement.textContent = `${gameState.singlePlayer.playerName}: ${gameState.singlePlayer.playerScore}`;
-  }
-}
 
 /**
  * Determine the winner of the game
@@ -200,11 +179,11 @@ const determineWinner = (playerChoice, computerChoice) => {
 
   if (playerWins) {
     gameState.singlePlayer.playerScore++;
-    updatePlayerScoreDisplay(); // Update display instead of directly modifying text
+    updatePlayerScoreDisplay(gameState); // Update display instead of directly modifying text
     return `${gameState.singlePlayer.playerName} wins!`;
   } else {
     gameState.singlePlayer.computerScore++;
-    updatePlayerScoreDisplay();
+    updatePlayerScoreDisplay(gameState);
     computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
     return "Computer wins!";
   }
@@ -284,7 +263,7 @@ function reset(e) {
   gameState.singlePlayer.computerScore = 0;
   gameState.bot.playerHistory = [];
   gameState.bot.computerHistory = [];
-  updatePlayerScoreDisplay();
+  updatePlayerScoreDisplay(gameState);
   computerScoreDisplay.textContent = '0';
   resultDisplay.textContent = '';
 
@@ -454,8 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add player name input event listener
   const playerNameInput = document.getElementById('player-name');
   if (playerNameInput) {
-    playerNameInput.addEventListener('change', updatePlayerName);
-    playerNameInput.addEventListener('blur', updatePlayerName);
+    playerNameInput.addEventListener('change', () => updatePlayerName(gameState));
+    playerNameInput.addEventListener('blur', () => updatePlayerName(gameState));
   }
   // Replace the original play button event listener
   playButton.removeEventListener('click', playSinglePlayerGame);
