@@ -1,12 +1,16 @@
+import { updatePlayerName, updatePlayerScoreDisplay } from './modules/playerName.js';
 // Game state - Combined from both files
 const gameState = {
   singlePlayer: {
     playerScore: 0,
-    computerScore: 0
+    computerScore: 0,
+    playerName: "Player"
   },
   multiPlayer: {
     player1Choice: null,
-    player2Choice: null
+    player2Choice: null,
+    player1Name: "Player 1",
+    player2Name: "Player 2"
   },
   bot: {
     playerHistory: [],
@@ -88,38 +92,40 @@ async function getComputerChoice() {
   switch (gameState.bot.difficulty) {
     case 'easy':
       break;
+    case 'hard':
+      if (gameState.bot.playerHistory.length >= 3) {
+        const lastThree = gameState.bot.playerHistory.slice(-3);
+        let computerChoice = null;
 
-    case 'medium':
-      // Look for simple patterns like repetition
-      const lastThree = gameState.bot.playerHistory.slice(-3);
-      if (gameState.bot.playerHistory.length >= 3) { // Only attempt pattern if history exists
-        if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
-          // Player repeated same move 3 times, they might do it again
-          const expectedPlayerMove = lastThree[0];
-          // Choose the move that beats the expected player move
+        // Attempt prediction first
+        const prediction = await getPrediction(gameState.bot.playerHistory);
+        if (prediction) {
+          console.log('prediction');
           const winningMoveMap = {
-            'rock': 'paper', // Computer's paper beats player's rock
-            'paper': 'scissors', // Computer's scissors beats player's paper
-            'scissors': 'rock' // Computer's rock beats player's scissors
+            'rock': 'paper',
+            'paper': 'scissors',
+            'scissors': 'rock'
+          };
+          computerChoice = winningMoveMap[prediction];
+        } else if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
+          // Fallback to pattern recognition if prediction fails
+          const expectedPlayerMove = lastThree[0];
+          console.log('basic prediction')
+          const winningMoveMap = {
+            'rock': 'paper',
+            'paper': 'scissors',
+            'scissors': 'rock'
           };
           computerChoice = winningMoveMap[expectedPlayerMove];
         }
-      }
-      break;
 
-    case 'hard':
-      if (gameState.bot.playerHistory.length >= 3) { // Only attempt prediction if history exists
-        const prediction = await getPrediction(gameState.bot.playerHistory);
+        // If neither prediction nor pattern recognition yielded a choice, fall back to random
+        if (!computerChoice) {
+          console.log('prediction failed, back to random');
+          computerChoice = getRandomChoice();
+        }
 
-        if (prediction) {
-          // Choose the move that beats the predicted player move
-          const winningMoveMap = {
-            'rock': 'paper', // Computer's paper beats player's rock
-            'paper': 'scissors', // Computer's scissors beats player's paper
-            'scissors': 'rock' // Computer's rock beats player's scissors
-          };
-          computerChoice = winningMoveMap[prediction];
-        };
+        return computerChoice; // Ensure a choice is returned
       }
       break;
     default:
@@ -169,12 +175,15 @@ const determineWinner = (playerChoice, computerChoice) => {
     (playerChoice === 'scissors' && computerChoice === 'paper')
   );
 
+
+
   if (playerWins) {
     gameState.singlePlayer.playerScore++;
-    playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
-    return "You win!";
+    updatePlayerScoreDisplay(gameState); // Update display instead of directly modifying text
+    return `${gameState.singlePlayer.playerName} wins!`;
   } else {
     gameState.singlePlayer.computerScore++;
+    updatePlayerScoreDisplay(gameState);
     computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
     return "Computer wins!";
   }
@@ -254,9 +263,10 @@ function reset(e) {
   gameState.singlePlayer.computerScore = 0;
   gameState.bot.playerHistory = [];
   gameState.bot.computerHistory = [];
-  playerScoreDisplay.textContent = '0';
+  updatePlayerScoreDisplay(gameState);
   computerScoreDisplay.textContent = '0';
   resultDisplay.textContent = '';
+
   if (document.getElementById('dashboard')) {
     document.getElementById('rock-percent').textContent = "0%";
     document.getElementById('paper-percent').textContent = "0%";
@@ -420,6 +430,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
   playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
   computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
+  // Add player name input event listener
+  const playerNameInput = document.getElementById('player-name');
+  if (playerNameInput) {
+    playerNameInput.addEventListener('change', () => updatePlayerName(gameState));
+    playerNameInput.addEventListener('blur', () => updatePlayerName(gameState));
+  }
   // Replace the original play button event listener
   playButton.removeEventListener('click', playSinglePlayerGame);
   playButton.addEventListener('click', playSinglePlayerGame);

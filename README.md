@@ -24,10 +24,10 @@ In this project, I've been working a lot with if-statements, switch functions an
 ## Version 3
 ### Gameplay Improvements
 
-1. Add customizable player names  
+[x] Add customizable player names  
 2. Include game history tracking (scoreboard)  
-3. [x] Create difficulty levels 
-4. [x] Analyze player patterns (Dashboard)
+[x] Create difficulty levels 
+[x] Analyze player patterns (Dashboard)
 
 ### Technical Improvements
 
