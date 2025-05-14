@@ -109,7 +109,7 @@ async function getComputerChoice() {
         } else if (lastThree[0] === lastThree[1] && lastThree[1] === lastThree[2]) {
           // Fallback to pattern recognition if prediction fails
           const expectedPlayerMove = lastThree[0];
-          console.log('basci prediction')
+          console.log('basic prediction')
           const winningMoveMap = {
             'rock': 'paper',
             'paper': 'scissors',
@@ -159,19 +159,18 @@ function updatePlayerName() {
   const nameInput = document.getElementById('player-name');
   if (nameInput) {
     gameState.singlePlayer.playerName = nameInput.value || "Player";
-    console.log(gameState.singlePlayer.playerName);
     // Update UI elements that display the player name
     const playerHeader = document.querySelector('.game-card h3');
     if (playerHeader) {
       playerHeader.innerHTML = `${gameState.singlePlayer.playerName} 🧍`;
     }
     // Update score display
-    updateScoreDisplay();
+    updatePlayerScoreDisplay();
   }
 }
 
 //Update the score display with current names
-function updateScoreDisplay() {
+function updatePlayerScoreDisplay() {
   const playerScoreElement = document.querySelector('.score-display div:first-child');
   if (playerScoreElement) {
     playerScoreElement.textContent = `${gameState.singlePlayer.playerName}: ${gameState.singlePlayer.playerScore}`;
@@ -201,14 +200,12 @@ const determineWinner = (playerChoice, computerChoice) => {
 
   if (playerWins) {
     gameState.singlePlayer.playerScore++;
-    updateScoreDisplay(); // Update display instead of directly modifying text
+    updatePlayerScoreDisplay(); // Update display instead of directly modifying text
     return `${gameState.singlePlayer.playerName} wins!`;
-    /* playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
-    return "You win!"; */
   } else {
     gameState.singlePlayer.computerScore++;
-    updateScoreDisplay();
-    //computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
+    updatePlayerScoreDisplay();
+    computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
     return "Computer wins!";
   }
 };
@@ -287,10 +284,9 @@ function reset(e) {
   gameState.singlePlayer.computerScore = 0;
   gameState.bot.playerHistory = [];
   gameState.bot.computerHistory = [];
-  updateScoreDisplay();
-  /* playerScoreDisplay.textContent = '0';
+  updatePlayerScoreDisplay();
   computerScoreDisplay.textContent = '0';
-  resultDisplay.textContent = ''; */
+  resultDisplay.textContent = '';
 
   if (document.getElementById('dashboard')) {
     document.getElementById('rock-percent').textContent = "0%";
