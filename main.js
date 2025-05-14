@@ -120,7 +120,6 @@ async function getComputerChoice() {
           };
           computerChoice = winningMoveMap[prediction];
         };
-        computerChoice = winningMoveMap[prediction];
       }
       break;
     default:
