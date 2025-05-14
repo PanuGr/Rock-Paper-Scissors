@@ -1,7 +1,10 @@
 # Rock-paper-scissor game
 **What Changed in the Game**
+## Version 1
+In this project, I've been working a lot with if-statements, switch functions and array loops.
 
-## HTML/CSS Improvements
+## Version 2
+### HTML/CSS Improvements
 
 * Updated to Bootstrap 5 from inline styles  
 * Responsive layout with proper grid system  
@@ -9,7 +12,7 @@
 * Improved visual feedback with animations and hover effects  
 * Better accessibility with proper labeling and contrast
 
-## JavaScript Improvements
+### JavaScript Improvements
 
 * Modular code organization with specific functions  
 * ES6+ syntax (arrow functions, template literals, etc.)  
@@ -17,3 +20,18 @@
 * Fixed bugs in winner determination logic  
 * Added visual feedback for selections  
 * Better error handling for user inputs
+
+## Version 3
+### Gameplay Improvements
+
+1. Add customizable player names  
+2. Include game history tracking (scoreboard)  
+3. [x] Create difficulty levels 
+4. [x] Analyze player patterns (Dashboard)
+
+### Technical Improvements
+
+1. Add local storage for saving game state between sessions  
+2. Implement online multiplayer using WebSockets (Supabase+database for scoreboard)  
+3. Create a mobile-responsive PWA version  
+4. Add sound effects and background music  

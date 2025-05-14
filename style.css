@@ -18,7 +18,6 @@
 
     .selected {
         color: #ffc107;
-        /* transform: scale(1.2); */
     }
 
     [type="radio"] {

@@ -1,0 +1,10 @@
+{
+  "name": "rock-paper-scissors",
+  "version": "3.0.0",
+  "description": "The classic game",
+  "source": "index.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Panagiotis Panagiotakopoulos",
+  "license": "ISC"
+}
