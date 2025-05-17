@@ -28,12 +28,13 @@ In this project, I've been working a lot with if-statements, switch functions an
 - Include game history tracking (scoreboard)  
 - Create difficulty levels 
 - Analyze player patterns (Dashboard)
-[] Multiplayer
-[] Online game history (scoreboard)
 
 ### Technical Improvements
 
 - Add local storage for saving game state between sessions  
-[] Implement online multiplayer using WebSockets (Supabase)  
-[] Create a mobile-responsive PWA version  
-[] Add sound effects and background music  
+
+## Version 4
+[] Multiplayer
+[] Online game history
+[] PWA
+[] Sound effects/background music 

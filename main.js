@@ -280,7 +280,6 @@ function reset(e) {
     document.getElementById('win-rate').textContent = "0%";
     document.getElementById('win-progress').style.width = "0%";
   }
-  // updateDashboard();
   // Remove 'selected' class from player choices icons
   playerChoices.forEach(choice => {
     choice.checked = false;
@@ -440,10 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (clearHistoryButton) {
     clearHistoryButton.addEventListener('click', clearGameHistory);
   }
-  /* 
-  playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
-  computerScoreDisplay.textContent = gameState.singlePlayer.computerScore; 
-  */
   // Add player name input event listener
   const playerNameInput = document.getElementById('player-name');
   if (playerNameInput) {
