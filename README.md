@@ -31,7 +31,7 @@ In this project, I've been working a lot with if-statements, switch functions an
 
 ### Technical Improvements
 
-1. Add local storage for saving game state between sessions  
+[x] Add local storage for saving game state between sessions  
 2. Implement online multiplayer using WebSockets (Supabase+database for scoreboard)  
 3. Create a mobile-responsive PWA version  
 4. Add sound effects and background music  

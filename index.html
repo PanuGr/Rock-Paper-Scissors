@@ -33,8 +33,8 @@
         <h2 class="text-warning mb-4">Player vs Computer</h2>
         <div class="mt-4 mb-3">
           <label for="player-name" class="form-label text-light">Your Name:</label>
-          <input type="text" id="player-name" class="form-control w-25 mx-auto" 
-                 placeholder="Enter your name" value="Player">
+          <input type="text" id="player-name" class="form-control w-25 mx-auto" placeholder="Enter your name"
+            value="Player">
         </div>
         <div class="row justify-content-center align-items-center g-4">
           <div class="col-md-5">
@@ -98,6 +98,28 @@
       </section>
 
       <hr class="text-light my-5">
+      <section id="game-history-section" class="bg-dark bg-opacity-75 p-4 rounded-3 shadow mb-5 text-light">
+        <h2 class="text-warning mb-4">Ιστορικό Παιχνιδιών</h2>
+        <div class="table-responsive">
+          <table class="table table-dark table-striped table-hover caption-top">
+            <caption class="text-light">Λίστα πρόσφατων παιχνιδιών</caption>
+            <thead class="table-warning">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Παίκτης</th>
+                <th scope="col">Επιλογή Παίκτη</th>
+                <th scope="col">Επιλογή Υπολογιστή</th>
+                <th scope="col">Αποτέλεσμα</th>
+                <th scope="col">Σκορ (Παίκτης - Υπολ.)</th>
+              </tr>
+            </thead>
+            <tbody id="game-history-body">
+            </tbody>
+          </table>
+        </div>
+        <button type="reset" id="clear-history-button" class="btn btn-danger mt-3">Εκκαθάριση Ιστορικού</button>
+      </section>
+
       <!-- 
        Multiplayer Mode 
       <section class="bg-danger bg-opacity-75 p-4 rounded-3 shadow">
