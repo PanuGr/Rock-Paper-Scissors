@@ -5,7 +5,7 @@ const gameState = {
   singlePlayer: {
     playerScore: 0,
     computerScore: 0,
-    playerName: "Player"
+    playerName: ""
   },
   multiPlayer: {
     player1Choice: null,
@@ -184,7 +184,7 @@ const determineWinner = (playerChoice, computerChoice) => {
   if (playerWins) {
     gameState.singlePlayer.playerScore++;
     updatePlayerScoreDisplay(gameState); // Update display instead of directly modifying text
-    return `${gameState.singlePlayer.playerName} wins!`;
+    return `${gameState.singlePlayer.playerName || "Player"} wins!`;
   } else {
     gameState.singlePlayer.computerScore++;
     updatePlayerScoreDisplay(gameState);

@@ -32,8 +32,8 @@ function addGameToHistory(playerName, playerChoice, computerChoice, resultMessag
       timestamp: new Date().toLocaleString() // Προαιρετικά, για εμφάνιση ώρας
     };
     gameState.gameHistory.unshift(gameEntry); // Προσθήκη στην αρχή για εμφάνιση των νεότερων πρώτα
-    // Περιορισμός του ιστορικού σε έναν λογικό αριθμό, π.χ. 10 τελευταία παιχνίδια
-    if (gameState.gameHistory.length > 10) {
+    // Περιορισμός του ιστορικού σε έναν λογικό αριθμό, π.χ. 5 τελευταία παιχνίδια
+    if (gameState.gameHistory.length > 5) {
         gameState.gameHistory.pop();
     }
     saveGameHistory(gameState);
@@ -59,7 +59,7 @@ function addGameToHistory(playerName, playerChoice, computerChoice, resultMessag
     gameState.gameHistory.forEach((entry, index) => {
       const row = gameHistoryBody.insertRow();
       row.insertCell().textContent = gameState.gameHistory.length - index; // Αρίθμηση #
-      row.insertCell().textContent = entry.playerName;
+      row.insertCell().textContent = entry.playerName||"Player";
       row.insertCell().innerHTML = `<i class="fas fa-hand-${entry.playerChoice}"></i> ${entry.playerChoice}`;
       row.insertCell().innerHTML = `<i class="fas fa-hand-${entry.computerChoice}"></i> ${entry.computerChoice}`;
       row.insertCell().textContent = entry.resultMessage;
