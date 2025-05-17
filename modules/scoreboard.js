@@ -51,7 +51,7 @@ function addGameToHistory(playerName, playerChoice, computerChoice, resultMessag
       const row = gameHistoryBody.insertRow();
       const cell = row.insertCell();
       cell.colSpan = 6; // Ο αριθμός των στηλών του πίνακα
-      cell.textContent = 'Δεν υπάρχουν παιχνίδια στο ιστορικό.';
+      cell.textContent = 'No saved games';
       cell.classList.add('text-center');
       return;
     }
@@ -69,7 +69,7 @@ function addGameToHistory(playerName, playerChoice, computerChoice, resultMessag
   
   // Εκκαθαρίζει το ιστορικό παιχνιδιών από την κατάσταση και το localStorage.
   function clearGameHistory(gameState) {
-    if (confirm("Είστε σίγουροι ότι θέλετε να εκκαθαρίσετε το ιστορικό παιχνιδιών;")) {
+    if (confirm("This will delete all game history. Are you sure?")) {
       gameState.gameHistory = [];
       saveGameHistory(gameState); // Αποθήκευση του κενού πίνακα
       renderGameHistory(gameState);

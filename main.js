@@ -1,5 +1,5 @@
 import { updatePlayerName, updatePlayerScoreDisplay } from './modules/playerName.js';
-import { loadGameHistory, saveGameHistory, addGameToHistory, renderGameHistory, clearGameHistory } from './modules/scoreboard.js';
+import { loadGameHistory, addGameToHistory, clearGameHistory } from './modules/scoreboard.js';
 // Game state
 const gameState = {
   singlePlayer: {
@@ -25,11 +25,9 @@ const playerChoices = document.querySelectorAll('[name="user"]');
 const computerChoiceIcons = Array.from(document.querySelectorAll('.computer-choice'));
 const playButton = document.getElementById('play-button');
 const resultDisplay = document.getElementById('result');
-const playerScoreDisplay = document.getElementById('player-score');
+//const playerScoreDisplay = document.getElementById('player-score');
 const computerScoreDisplay = document.getElementById('computer-score');
-const gameHistoryBody = document.getElementById('game-history-body');
 const clearHistoryButton = document.getElementById('clear-history-button');
-const localSave = 'rpsGameHistory';
 
 
 /**
@@ -438,7 +436,7 @@ function updateDashboard(playerMove, computerMove, result) {
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
   updatePlayerScoreDisplay(gameState);
-  loadGameHistory(gameState); // Φόρτωση του ιστορικού κατά την έναρξη
+  loadGameHistory(gameState,'GameHistory'); // Φόρτωση του ιστορικού κατά την έναρξη
   if (clearHistoryButton) {
     clearHistoryButton.addEventListener('click', clearGameHistory);
   }
