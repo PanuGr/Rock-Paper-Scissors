@@ -34,7 +34,7 @@ In this project, I've been working a lot with if-statements, switch functions an
 - Add local storage for saving game state between sessions  
 
 ## Version 4
-[] Multiplayer
-[] Online game history
-[] PWA
-[] Sound effects/background music 
+[ ] Multiplayer
+[ ] Online game history
+[ ] PWA
+[ ] Sound effects/background music 
