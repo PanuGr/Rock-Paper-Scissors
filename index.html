@@ -34,8 +34,8 @@
         <h2 class="text-warning mb-4">Player vs Computer</h2>
         <div class="mt-4 mb-3">
           <label for="player-name" class="form-label text-light">Your Name:</label>
-          <input type="text" id="player-name" class="form-control w-25 mx-auto" 
-                 placeholder="Enter your name" value="Player">
+          <input type="text" id="player-name" class="form-control w-25 mx-auto" placeholder="Enter your name"
+            value="">
         </div>
         <div class="row justify-content-center align-items-center g-4">
           <div class="col-md-5">
@@ -99,6 +99,27 @@
       </section>
 
       <hr class="text-light my-5">
+      <section id="game-history-section" class="bg-dark bg-opacity-75 p-4 rounded-3 shadow mb-5 text-light">
+        <h2 class="text-warning mb-4">Recent Games</h2>
+        <div class="table-responsive">
+          <table class="table table-dark table-striped table-hover caption-top">
+            <thead class="table-warning">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Player</th>
+                <th scope="col">Player's choice</th>
+                <th scope="col">Computer's choice</th>
+                <th scope="col">Result</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody id="game-history-body">
+            </tbody>
+          </table>
+        </div>
+        <button type="button" id="clear-history-button" class="btn btn-danger mt-3">Delete saved games</button>
+      </section>
+
       <!-- 
        Multiplayer Mode 
       <section class="bg-danger bg-opacity-75 p-4 rounded-3 shadow">

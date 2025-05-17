@@ -1,10 +1,11 @@
 import { updatePlayerName, updatePlayerScoreDisplay } from './modules/playerName.js';
-// Game state - Combined from both files
+import { loadGameHistory, addGameToHistory, clearGameHistory } from './modules/scoreboard.js';
+// Game state
 const gameState = {
   singlePlayer: {
     playerScore: 0,
     computerScore: 0,
-    playerName: "Player"
+    playerName: ""
   },
   multiPlayer: {
     player1Choice: null,
@@ -16,15 +17,18 @@ const gameState = {
     playerHistory: [],
     computerHistory: [],
     difficulty: 'easy'
-  }
+  },
+  gameHistory: []
 };
 // DOM Elements - Single Player
 const playerChoices = document.querySelectorAll('[name="user"]');
 const computerChoiceIcons = Array.from(document.querySelectorAll('.computer-choice'));
 const playButton = document.getElementById('play-button');
 const resultDisplay = document.getElementById('result');
-const playerScoreDisplay = document.getElementById('player-score');
+//const playerScoreDisplay = document.getElementById('player-score');
 const computerScoreDisplay = document.getElementById('computer-score');
+const clearHistoryButton = document.getElementById('clear-history-button');
+
 
 /**
  * Get the user's choice from radio buttons
@@ -180,7 +184,7 @@ const determineWinner = (playerChoice, computerChoice) => {
   if (playerWins) {
     gameState.singlePlayer.playerScore++;
     updatePlayerScoreDisplay(gameState); // Update display instead of directly modifying text
-    return `${gameState.singlePlayer.playerName} wins!`;
+    return `${gameState.singlePlayer.playerName || "Player"} wins!`;
   } else {
     gameState.singlePlayer.computerScore++;
     updatePlayerScoreDisplay(gameState);
@@ -201,8 +205,6 @@ async function playSinglePlayerGame() {
     return;
   }
 
-  //resultDisplay.classList.remove('text-danger');
-
   // Record player's choice for pattern analysis
   gameState.bot.playerHistory.push(playerChoice);
 
@@ -218,6 +220,10 @@ async function playSinglePlayerGame() {
   // Determine and display the winner
   const result = determineWinner(playerChoice, computerChoice);
   resultDisplay.textContent = result;
+
+  // Save locally
+  addGameToHistory(gameState.singlePlayer.playerName,
+    playerChoice, computerChoice, result, gameState.singlePlayer.playerScore, gameState.singlePlayer.computerScore, gameState);
 
   // Add animation to the result
   resultDisplay.classList.add('result-animation');
@@ -274,9 +280,9 @@ function reset(e) {
     document.getElementById('win-rate').textContent = "0%";
     document.getElementById('win-progress').style.width = "0%";
   }
-  updateDashboard();
   // Remove 'selected' class from player choices icons
-  document.querySelectorAll('[name="user"]').forEach(choice => {
+  playerChoices.forEach(choice => {
+    choice.checked = false;
     choice.nextElementSibling.classList.remove('selected');
   });
   // Hide and remove 'selected' class from computer choice icons
@@ -428,11 +434,16 @@ function updateDashboard(playerMove, computerMove, result) {
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
-  playerScoreDisplay.textContent = gameState.singlePlayer.playerScore;
-  computerScoreDisplay.textContent = gameState.singlePlayer.computerScore;
+  updatePlayerScoreDisplay(gameState);
+  loadGameHistory(gameState,'GameHistory'); // Φόρτωση του ιστορικού κατά την έναρξη
+  if (clearHistoryButton) {
+    clearHistoryButton.addEventListener('click', clearGameHistory);
+  }
   // Add player name input event listener
   const playerNameInput = document.getElementById('player-name');
   if (playerNameInput) {
+  playerNameInput.value = gameState.singlePlayer.playerName; // Ορισμός αρχικής τιμής από το gameState
+
     playerNameInput.addEventListener('change', () => updatePlayerName(gameState));
     playerNameInput.addEventListener('blur', () => updatePlayerName(gameState));
   }

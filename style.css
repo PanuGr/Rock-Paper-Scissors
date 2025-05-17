@@ -11,13 +11,12 @@
         transform: scale(1.2);
     }
 
-    .game-card {
-        /* border-radius: 15px; */
-        overflow: hidden;
-    }
-
     .selected {
         color: #ffc107;
+    }
+
+    .game-card {
+        overflow: hidden;
     }
 
     [type="radio"] {
@@ -26,8 +25,9 @@
         width: 0;
         height: 0;
     }
-    .computer-choice{
-        visibility: hidden;;
+
+    .computer-choice {
+        visibility: hidden;
     }
 
     #result {

@@ -2,7 +2,7 @@
 function updatePlayerName(gameState) {
   const nameInput = document.getElementById('player-name');
   if (nameInput) {
-    gameState.singlePlayer.playerName = nameInput.value || "Player";
+    gameState.singlePlayer.playerName = nameInput.value;
     
     // Update UI elements that display the player name
     const playerHeader = document.querySelector('.game-card h3');
@@ -18,7 +18,7 @@ function updatePlayerName(gameState) {
 function updatePlayerScoreDisplay(gameState) {
   const playerScoreElement = document.querySelector('.score-display div:first-child');
   if (playerScoreElement) {
-    playerScoreElement.textContent = `${gameState.singlePlayer.playerName}: ${gameState.singlePlayer.playerScore}`;
+    playerScoreElement.textContent = `${gameState.singlePlayer.playerName||"Player"}: ${gameState.singlePlayer.playerScore}`;
   }
 }
 
