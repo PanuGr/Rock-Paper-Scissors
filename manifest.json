@@ -29,15 +29,7 @@
       "type": "image/avif",
       "platform": "windows",
       "form_factor": "wide",
-      "label": "Full page screenshot of the game on desktop"
-    },
-    {
-      "src": "icons/screenshots/narrow.avif",
-      "sizes": "651x1862",
-      "type": "image/avif",
-      "platform": "android",
-      "form_factor": "narrow",
-      "label": "Full page screenshot of the game on mobile"
+      "label": "Full page screenshot of the game"
     },
     {
       "src": "icons/screenshots/desktop.avif",
