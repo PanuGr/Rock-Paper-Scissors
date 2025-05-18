@@ -1,0 +1,16 @@
+{
+  "name": "Rock Paper Scissors",
+  "short_name": "RPS",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#dc3545",
+  "description": "Play Rock, Paper, Scissors against the computer!",
+  "icons": [
+    {
+      "src": "scissors.ico",
+      "sizes": "50x50",
+      "type": "image/x-icon"
+    }
+  ]
+}

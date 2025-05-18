@@ -20,6 +20,9 @@
     integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
     crossorigin="anonymous"></script>
   <script defer type="module" src="main.js"></script>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+  <meta name="theme-color" content="#dc3545">
 </head>
 
 <body class="bg-danger bg-gradient text-center">
@@ -34,8 +37,7 @@
         <h2 class="text-warning mb-4">Player vs Computer</h2>
         <div class="mt-4 mb-3">
           <label for="player-name" class="form-label text-light">Your Name:</label>
-          <input type="text" id="player-name" class="form-control w-25 mx-auto" placeholder="Enter your name"
-            value="">
+          <input type="text" id="player-name" class="form-control w-25 mx-auto" placeholder="Enter your name" value="">
         </div>
         <div class="row justify-content-center align-items-center g-4">
           <div class="col-md-5">
@@ -200,6 +202,19 @@
       </small>
     </footer>
   </div>
+  <script>
+    // Register service worker if supported
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(function (registration) {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          }, function (err) {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+  </script>
 </body>
 
 </html>
