@@ -5,9 +5,8 @@ const urlsToCache = [
   "/manifest.json",
   "/main.js",
   "/modules/playerName.js",
-  "/modules/scoreboard.js"
-  // Add additional files you want cached for offline use (CSS, JS, icons, etc.)
-];
+  "/modules/scoreboard.js",
+  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"];
 
 // Install event: cache files
 self.addEventListener("install", event => {
