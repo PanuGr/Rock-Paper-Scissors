@@ -29,7 +29,7 @@
       "type": "image/avif",
       "platform": "windows",
       "form_factor": "wide",
-      "label": "Full page screenshot of the game in desktop"
+      "label": "Full page screenshot of the game on desktop"
     },
     {
       "src": "icons/screenshots/narrow.avif",
@@ -37,7 +37,7 @@
       "type": "image/avif",
       "platform": "android",
       "form_factor": "narrow",
-      "label": "Full page screenshot of the game in mobiles"
+      "label": "Full page screenshot of the game on mobile"
     },
     {
       "src": "icons/screenshots/desktop.avif",
@@ -45,7 +45,7 @@
       "type": "image/avif",
       "platform": "windows",
       "form_factor": "wide",
-      "label": "Screenshot of the game in mobiles"
+      "label": "Screenshot of the game on desktop"
     },
     {
       "src": "icons/screenshots/mobile.avif",
@@ -53,7 +53,7 @@
       "type": "image/avif",
       "platform": "android",
       "form_factor": "narrow",
-      "label": "Screenshot of the game in mobiles"
+      "label": "Screenshot of the game on mobile"
     }
   ]
 }
