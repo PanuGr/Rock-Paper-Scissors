@@ -11,7 +11,14 @@ const urlsToCache = [
 // Install event: cache files
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Service Worker: Caching...');
+        return cache.addAll(urlsToCache);
+      })
+      .catch(error => {
+        console.error('Service Worker: Failed to cache', error);
+      })
   );
 });
 
