@@ -1,11 +1,15 @@
 {
   "name": "Rock Paper Scissors",
   "short_name": "RPS",
-  "start_url": ".",
+  "start_url": "https://panugr.github.io/Rock-Paper-Scissors/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#dc3545",
   "description": "Play Rock, Paper, Scissors against the computer!",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
   "icons": [
     {
       "src": "icons/android-chrome-192x192.png",
@@ -16,6 +20,40 @@
       "src": "icons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/screenshots/wide.avif",
+      "sizes": "1920x1569",
+      "type": "image/avif",
+      "platform": "windows",
+      "form_factor": "wide",
+      "label": "Full page screenshot of the game in desktop"
+    },
+    {
+      "src": "icons/screenshots/narrow.avif",
+      "sizes": "651x1862",
+      "type": "image/avif",
+      "platform": "android",
+      "form_factor": "narrow",
+      "label": "Full page screenshot of the game in mobiles"
+    },
+    {
+      "src": "icons/screenshots/desktop.avif",
+      "sizes": "1917x864",
+      "type": "image/avif",
+      "platform": "windows",
+      "form_factor": "wide",
+      "label": "Screenshot of the game in mobiles"
+    },
+    {
+      "src": "icons/screenshots/mobile.avif",
+      "sizes": "644x983",
+      "type": "image/avif",
+      "platform": "android",
+      "form_factor": "narrow",
+      "label": "Screenshot of the game in mobiles"
     }
   ]
 }
