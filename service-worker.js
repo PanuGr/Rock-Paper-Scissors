@@ -1,14 +1,12 @@
-const CACHE_NAME = "rps-cache-v1";
+const CACHE_NAME = "rps-cache-v1.2";
 const urlsToCache = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/main.js",
-  "/modules/playerName.js",
-  "/modules/scoreboard.js",
+  "/Rock-Paper-Scissors/",
+  "/Rock-Paper-Scissors/index.html",
+  "/Rock-Paper-Scissors/main.js",
+  "/Rock-Paper-Scissors/modules/playerName.js",
+  "/Rock-Paper-Scissors/modules/scoreboard.js",
   "https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
 ];
-
 // Install event: cache files
 self.addEventListener("install", event => {
   event.waitUntil(
