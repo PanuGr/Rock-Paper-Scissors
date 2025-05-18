@@ -2,6 +2,8 @@
   "name": "Rock Paper Scissors",
   "short_name": "RPS",
   "start_url": "https://panugr.github.io/Rock-Paper-Scissors/",
+  "id": "/Rock-Paper-Scissors/",
+  "display_override": ["minimal-ui"],
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
