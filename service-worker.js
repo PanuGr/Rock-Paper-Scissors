@@ -6,7 +6,8 @@ const urlsToCache = [
   "/main.js",
   "/modules/playerName.js",
   "/modules/scoreboard.js",
-  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"];
+  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+];
 
 // Install event: cache files
 self.addEventListener("install", event => {
