@@ -1,6 +1,6 @@
 {
-  "name": "Rock-Paper-Scissors",
-  "short_name": "RPS",
+  "name": "Rock-Paper-Scissors Duel",
+  "short_name": "RPS Duel",
   "start_url": "https://panugr.github.io/Rock-Paper-Scissors/",
   "id": "/Rock-Paper-Scissors/",
   "display_override": ["minimal-ui"],
@@ -8,7 +8,8 @@
   "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#dc3545",
-  "description": "Play Rock, Paper, Scissors against the computer or a friend!",
+  "description": "Play Rock, Paper, Scissors against the computer!",
+  "iarc_rating_id": "e58c174a-81d2-5c3c-32cc-34b8de4a52e9",
   "launch_handler": {
     "client_mode": "focus-existing"
   },
