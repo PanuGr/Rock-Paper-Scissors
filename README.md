@@ -36,5 +36,5 @@ In this project, I've been working a lot with if-statements, switch functions an
 ## Version 4
 - [ ] Multiplayer
 - [ ] Online game history
-- [ ] PWA
+- [x] PWA
 - [ ] Sound effects/background music 
