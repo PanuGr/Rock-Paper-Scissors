@@ -23,9 +23,19 @@ async function getResults(params) {
 //getResults();
 
 async function shareScore(params) {
-  const { data,error } = await supabase
+  const { data, error } = await supabase
     .from('scoreboard')
     .insert(
-    { id: 1, name: 'Mordor' }
-  )
-}
+      { id: 1, name: 'Mordor' }
+    )
+
+  if (error) {
+    console.error(error);
+  }
+  else {
+    console.log(data);
+  }
+};
+
+shareScore(params);
+
