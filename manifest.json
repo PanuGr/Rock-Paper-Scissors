@@ -3,13 +3,16 @@
   "short_name": "RPS Duel",
   "start_url": "https://panugr.github.io/Rock-Paper-Scissors/",
   "id": "/Rock-Paper-Scissors/",
-  "display_override": ["minimal-ui"],
+  "display_override": [
+    "minimal-ui",
+    "window-controls-overlay"
+  ],
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#dc3545",
   "description": "Play Rock, Paper, Scissors against the computer!",
-  "iarc_rating_id": "e58c174a-81d2-5c3c-32cc-34b8de4a52e9",
+  "iarc_rating_id": "6d978d63-9c91-4b08-93c1-95e37489d143",
   "launch_handler": {
     "client_mode": "focus-existing"
   },
@@ -50,5 +53,20 @@
       "form_factor": "narrow",
       "label": "Screenshot of the game on mobile"
     }
-  ]
+  ],
+  "dir": "ltr",
+  "lang": "en",
+  "related_applications": [
+    {
+      "platform": "windows",
+      "url": "https://apps.microsoft.com/detail/9P5T26TLGMG6",
+      "id": "9P5T26TLGMG6"
+    }
+  ],
+  "categories": [
+    "games"
+  ],
+  "edge_side_panel": {
+    "preferred_width": 320
+  }
 }

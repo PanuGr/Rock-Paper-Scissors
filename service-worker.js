@@ -1,4 +1,4 @@
-const CACHE_NAME = "rps-cache-v1.2";
+const CACHE_NAME = "rps-cache-v1.3";
 const urlsToCache = [
   "/Rock-Paper-Scissors/",
   "/Rock-Paper-Scissors/index.html",
