@@ -4,6 +4,7 @@
   "description": "The classic game but better",
   "source": "index.html",
   "scripts": {
+    "test": "parcel --https",
     "start": "parcel",
     "build": "parcel build"
   },
