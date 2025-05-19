@@ -37,4 +37,4 @@ In this project, I've been working a lot with if-statements, switch functions an
 - [ ] Multiplayer
 - [ ] Online game history
 - [x] PWA
-- [ ] Sound effects/background music 
+- [x] Sound effects/background music 
