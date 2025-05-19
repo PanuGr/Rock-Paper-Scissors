@@ -1,5 +1,6 @@
 import { updatePlayerName, updatePlayerScoreDisplay } from './modules/playerName.js';
 import { loadGameHistory, addGameToHistory, clearGameHistory } from './modules/scoreboard.js';
+
 // Game state
 const gameState = {
   singlePlayer: {
@@ -27,6 +28,7 @@ const playButton = document.getElementById('play-button');
 const resultDisplay = document.getElementById('result');
 //const playerScoreDisplay = document.getElementById('player-score');
 const computerScoreDisplay = document.getElementById('computer-score');
+const shareHistoryButton = document.getElementById('share-history-button');
 const clearHistoryButton = document.getElementById('clear-history-button');
 
 

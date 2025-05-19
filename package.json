@@ -1,0 +1,20 @@
+{
+  "name": "rock-paper-scissors_duel",
+  "version": "4.0.0",
+  "description": "The classic game but better",
+  "source": "index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.15.1",
+    "@parcel/transformer-webmanifest": "^2.15.1",
+    "@supabase/supabase-js": "^2.49.5",
+    "buffer": "^6.0.3",
+    "parcel": "^2.15.1"
+  }
+}

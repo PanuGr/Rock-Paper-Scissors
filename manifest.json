@@ -18,19 +18,19 @@
   },
   "icons": [
     {
-      "src": "icons/android-chrome-192x192.png",
+      "src": "assets/icons/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/android-chrome-512x512.png",
+      "src": "assets/icons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
   "screenshots": [
     {
-      "src": "icons/screenshots/wide.avif",
+      "src": "assets/screenshots/wide.avif",
       "sizes": "1920x1569",
       "type": "image/avif",
       "platform": "windows",
@@ -38,7 +38,7 @@
       "label": "Full page screenshot of the game"
     },
     {
-      "src": "icons/screenshots/desktop.avif",
+      "src": "assets/screenshots/desktop.avif",
       "sizes": "1917x864",
       "type": "image/avif",
       "platform": "windows",
@@ -46,7 +46,7 @@
       "label": "Screenshot of the game on desktop"
     },
     {
-      "src": "icons/screenshots/mobile.avif",
+      "src": "assets/screenshots/mobile.avif",
       "sizes": "644x983",
       "type": "image/avif",
       "platform": "android",
