@@ -28,7 +28,7 @@ The App is suitable for users of all ages. Since we do not collect any personal 
 
 **Changes to This Privacy Policy**
 
-We may update this privacy policy from time to time. Any changes will be effective immediately upon posting the updated policy within the App or on our [website](https://panugr.github.io/Rock-Paperr-Scissors/).
+We may update this privacy policy from time to time. Any changes will be effective immediately upon posting the updated policy within the App or on our [website](https://panugr.github.io/Rock-Paper-Scissors/).
 We encourage you to review this policy periodically.
 
 **Contact Us**
