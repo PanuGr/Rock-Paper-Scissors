@@ -38,3 +38,5 @@ In this project, I've been working a lot with if-statements, switch functions an
 - [ ] Online game history
 - [x] PWA
 - [ ] Sound effects/background music 
+
+Note: This branch contains code by Jules.
