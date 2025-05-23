@@ -273,13 +273,25 @@ function reset(e) {
   computerScoreDisplay.textContent = '0';
   resultDisplay.textContent = '';
 
-  if (document.getElementById('dashboard')) {
-    document.getElementById('rock-percent').textContent = "0%";
-    document.getElementById('paper-percent').textContent = "0%";
-    document.getElementById('scissors-percent').textContent = '0%';
-    document.getElementById('win-rate').textContent = "0%";
-    document.getElementById('win-progress').style.width = "0%";
+  
+  const rockPercentElReset = document.getElementById('rock-percent');
+  if (rockPercentElReset) rockPercentElReset.textContent = "0%";
+  const paperPercentElReset = document.getElementById('paper-percent');
+  if (paperPercentElReset) paperPercentElReset.textContent = "0%";
+  const scissorsPercentElReset = document.getElementById('scissors-percent');
+  if (scissorsPercentElReset) scissorsPercentElReset.textContent = '0%';
+  const winRateElReset = document.getElementById('win-rate');
+  if (winRateElReset) winRateElReset.textContent = "0%";
+  const winProgressBarReset = document.getElementById('win-progress');
+  if (winProgressBarReset) {
+    winProgressBarReset.style.width = "0%";
+    winProgressBarReset.setAttribute('aria-valuenow', 0);
   }
+  const gamesPlayedElReset = document.getElementById('games-played');
+  if (gamesPlayedElReset) gamesPlayedElReset.textContent = "0";
+  const analysisElReset = document.getElementById('analysis');
+  if (analysisElReset) analysisElReset.textContent = "Play more games for game analysis.";
+
   // Remove 'selected' class from player choices icons
   playerChoices.forEach(choice => {
     choice.checked = false;
@@ -291,93 +303,14 @@ function reset(e) {
 }
 
 /**
- * Toggle Dashboard visibility
- */
-function toggleDashboard() {
-  const dashboard = document.getElementById('dashboard');
-  const dashboardButton = document.getElementById('dashboard-button');
-
-  if (dashboard) {
-    const isVisible = dashboard.style.display !== 'none';
-    dashboard.style.display = isVisible ? 'none' : 'block';
-    dashboardButton.textContent = isVisible ? 'Show Stats' : 'Hide Stats';
-  } else {
-    createDashboard();
-    dashboardButton.textContent = 'Hide Stats';
-  }
-}
-
-/**
- * Create a simple Dashboard
- */
-function createDashboard() {
-  const dashboard = document.createElement('div');
-  dashboard.id = 'dashboard';
-  dashboard.className = 'mt-4 p-3 bg-dark rounded';
-  dashboard.innerHTML = `
-    <h4 class="text-light">Game Analysis</h4>
-    <div class="row g-3 mt-1">
-      <div class="col-md-4">
-        <div class="card bg-dark border-info text-light">
-          <div class="card-body">
-            <h5 class="card-title">Your Moves</h5>
-            <div class="d-flex justify-content-around">
-              <div class="text-center">
-                <i class="fas fa-hand-rock"></i>
-                <div id="rock-percent">0%</div>
-              </div>
-              <div class="text-center">
-                <i class="fas fa-hand-paper"></i>
-                <div id="paper-percent">0%</div>
-              </div>
-              <div class="text-center">
-                <i class="fas fa-hand-scissors"></i>
-                <div id="scissors-percent">0%</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card bg-dark border-info text-light">
-          <div class="card-body">
-            <h5 class="card-title">Game Stats</h5>
-            <p>Games played: <span id="games-played">0</span></p>
-            <p>Win rate: <span id="win-rate">0%</span></p>
-            <div class="progress">
-              <div id="win-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card bg-dark border-info text-light">
-          <div class="card-body">
-            <h5 class="card-title">Analysis</h5>
-            <p id="analysis" class="small">Play more games for game analysis</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Add dashboard to the page after the scores
-  const scoreDisplay = document.querySelector('.score-display');
-  scoreDisplay.parentNode.insertBefore(dashboard, resultDisplay.nextSibling);
-
-  // Initial update
-  updateDashboard();
-}
-
-/**
  * Update the Dashboard with latest statistics
  */
 function updateDashboard(playerMove, computerMove, result) {
-  const dashboard = document.getElementById('dashboard');
-  if (!dashboard) return;
-
+  // Modal elements are identified by their IDs directly.
   const totalGames = gameState.bot.playerHistory.length;
-  document.getElementById('games-played').textContent = totalGames;
+  
+  const gamesPlayedEl = document.getElementById('games-played');
+  if (gamesPlayedEl) gamesPlayedEl.textContent = totalGames;
 
   // Calculate move percentages
   const moveCount = {
@@ -387,14 +320,23 @@ function updateDashboard(playerMove, computerMove, result) {
   };
 
   if (totalGames > 0) {
-    document.getElementById('rock-percent').textContent = `${Math.round(moveCount.rock / totalGames * 100)}%`;
-    document.getElementById('paper-percent').textContent = `${Math.round(moveCount.paper / totalGames * 100)}%`;
-    document.getElementById('scissors-percent').textContent = `${Math.round(moveCount.scissors / totalGames * 100)}%`;
+    const rockPercentEl = document.getElementById('rock-percent');
+    if (rockPercentEl) rockPercentEl.textContent = `${Math.round(moveCount.rock / totalGames * 100)}%`;
+    const paperPercentEl = document.getElementById('paper-percent');
+    if (paperPercentEl) paperPercentEl.textContent = `${Math.round(moveCount.paper / totalGames * 100)}%`;
+    const scissorsPercentEl = document.getElementById('scissors-percent');
+    if (scissorsPercentEl) scissorsPercentEl.textContent = `${Math.round(moveCount.scissors / totalGames * 100)}%`;
 
     // Win rate
     const winRate = gameState.singlePlayer.playerScore / totalGames * 100;
-    document.getElementById('win-rate').textContent = `${Math.round(winRate)}%`;
-    document.getElementById('win-progress').style.width = `${winRate}%`;
+    const winRateEl = document.getElementById('win-rate');
+    if (winRateEl) winRateEl.textContent = `${Math.round(winRate)}%`;
+    const winProgressBar = document.getElementById('win-progress');
+    if (winProgressBar) {
+        winProgressBar.style.width = `${winRate}%`;
+        winProgressBar.setAttribute('aria-valuenow', winRate);
+    }
+
 
     // Analysis
     if (totalGames >= 5) {
@@ -426,8 +368,28 @@ function updateDashboard(playerMove, computerMove, result) {
         }
       }
 
-      document.getElementById('analysis').textContent = analysis;
+      const analysisEl = document.getElementById('analysis');
+      if (analysisEl) analysisEl.textContent = analysis;
+    } else { // Reset analysis if not enough games
+        const analysisElReset = document.getElementById('analysis');
+        if (analysisElReset) analysisElReset.textContent = "Play more games for game analysis.";
     }
+  } else { // Reset all fields if totalGames is 0
+    const rockPercentEl0 = document.getElementById('rock-percent');
+    if (rockPercentEl0) rockPercentEl0.textContent = "0%";
+    const paperPercentEl0 = document.getElementById('paper-percent');
+    if (paperPercentEl0) paperPercentEl0.textContent = "0%";
+    const scissorsPercentEl0 = document.getElementById('scissors-percent');
+    if (scissorsPercentEl0) scissorsPercentEl0.textContent = "0%";
+    const winRateEl0 = document.getElementById('win-rate');
+    if (winRateEl0) winRateEl0.textContent = "0%";
+    const winProgressBar0 = document.getElementById('win-progress');
+    if (winProgressBar0) {
+        winProgressBar0.style.width = "0%";
+        winProgressBar0.setAttribute('aria-valuenow', 0);
+    }
+    const analysisEl0 = document.getElementById('analysis');
+    if (analysisEl0) analysisEl0.textContent = "Play more games for game analysis.";
   }
 }
 
@@ -448,12 +410,21 @@ document.addEventListener('DOMContentLoaded', () => {
     playerNameInput.addEventListener('blur', () => updatePlayerName(gameState));
   }
   // Replace the original play button event listener
-  playButton.removeEventListener('click', playSinglePlayerGame);
+  playButton.removeEventListener('click', playSinglePlayerGame); // Should be safe even if not originally there
   playButton.addEventListener('click', playSinglePlayerGame);
+
   // Add visual feedback for choices
   addChoiceSelectionFeedback(playerChoices);
+
   // Reset game history for new difficulty
-  document.getElementById('difficulty-select').addEventListener('change', reset);
-  // Add event listener to open dashboard
-  document.getElementById("dashboard-button").addEventListener('click', toggleDashboard);
+  const difficultySelect = document.getElementById('difficulty-select');
+  if (difficultySelect) {
+    difficultySelect.addEventListener('change', reset);
+  }
+
+  
+  // Initial call to update dashboard in case of existing game state (e.g. loaded from localStorage)
+  // Make sure this is called *after* the modal HTML is in the DOM and IDs are accessible.
+  // If the modal is not visible by default, this will update its content silently.
+  updateDashboard(); 
 });

@@ -86,7 +86,7 @@
           </select>
         </div>
 
-        <div><button type="button" id="dashboard-button" class="mt-2 btn btn-info">Show Stats</button></div>
+        <div><button type="button" id="dashboard-button" class="mt-2 btn btn-info" data-bs-toggle="modal" data-bs-target="#dashboardModal">Show Stats</button></div>
 
         <div class="mt-4">
           <button type="button" id="play-button" class="btn btn-warning btn-lg fw-bold px-4 py-2">
@@ -123,6 +123,66 @@
         </div>
         <button type="button" id="clear-history-button" class="btn btn-danger mt-3">Delete saved games</button>
       </section>
+
+      <!-- Dashboard Modal -->
+      <div class="modal fade" id="dashboardModal" tabindex="-1" aria-labelledby="dashboardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+          <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+              <h5 class="modal-title text-warning" id="dashboardModalLabel">Game Analysis</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <div class="card bg-dark border-info text-light h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Your Moves</h5>
+                      <div class="d-flex justify-content-around align-items-center mt-3">
+                        <div class="text-center">
+                          <i class="fas fa-hand-rock fa-2x"></i>
+                          <div id="rock-percent" class="fs-4 mt-1">0%</div>
+                        </div>
+                        <div class="text-center">
+                          <i class="fas fa-hand-paper fa-2x"></i>
+                          <div id="paper-percent" class="fs-4 mt-1">0%</div>
+                        </div>
+                        <div class="text-center">
+                          <i class="fas fa-hand-scissors fa-2x"></i>
+                          <div id="scissors-percent" class="fs-4 mt-1">0%</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card bg-dark border-info text-light h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Game Stats</h5>
+                      <p class="card-text mt-3">Games played: <span id="games-played">0</span></p>
+                      <p class="card-text">Win rate: <span id="win-rate">0%</span></p>
+                      <div class="progress" style="height: 20px;">
+                        <div id="win-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card bg-dark border-info text-light h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">AI Insights</h5>
+                      <p id="analysis" class="small mt-3">Play more games for game analysis.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer border-secondary">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer class="text-light mt-5">
