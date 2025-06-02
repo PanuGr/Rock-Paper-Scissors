@@ -21,12 +21,16 @@ async function getResults(params) {
 }
 
 //getResults();
-
 async function shareScore(params) {
+  const localStorage = window.localStorage;
+  const gameHistory = JSON.parse(localStorage.getItem('GameHistory'));
   const { data, error } = await supabase
     .from('scoreboard')
     .insert(
-      { id: 1, name: 'Mordor' }
+      {
+        Player: gameHistory[0].playerName,
+        Score: gameHistory[0].score
+      }
     )
 
   if (error) {
@@ -37,5 +41,5 @@ async function shareScore(params) {
   }
 };
 
-shareScore(params);
-
+getResults();
+shareScore();
