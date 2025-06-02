@@ -41,5 +41,6 @@ async function shareScore(params) {
   }
 };
 
-getResults();
-shareScore();
+/* getResults();
+shareScore(); 
+*/
