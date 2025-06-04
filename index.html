@@ -25,8 +25,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#dc3545">
-  <!-- SUPABASE -->
-  <script defer type="module" src="./modules/shareScore.js"></script>
 </head>
 
 <body class="bg-danger bg-gradient text-center">
@@ -79,17 +77,6 @@
             </div>
           </div>
         </div>
-
-        <div class="mt-4" id="difficultySelector">
-          <label for="difficulty-select" class="form-label text-light">Difficulty:</label>
-          <select id="difficulty-select" class="form-select w-auto mx-auto">
-            <option value="easy" selected>Easy</option>
-            <option value="hard">Hard</option>
-          </select>
-        </div>
-
-        <div><button type="button" id="dashboard-button" class="mt-2 btn btn-info">Show Stats</button></div>
-
         <div class="mt-4">
           <button type="button" id="play-button" class="btn btn-warning btn-lg fw-bold px-4 py-2">
             Play
@@ -102,6 +89,18 @@
         </div>
 
         <div id="result" class="text-warning mt-4"></div>
+
+        <div class="mt-4" id="difficultySelector">
+          <label for="difficulty-select" class="form-label text-light">Difficulty:</label>
+          <select id="difficulty-select" class="form-select w-auto mx-auto">
+            <option value="easy" selected>Easy</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+
+        <div><button type="button" id="dashboard-button" class="mt-2 btn btn-info">Show Stats</button></div>
+
+
       </section>
 
       <hr class="text-light my-5">
@@ -123,8 +122,25 @@
             </tbody>
           </table>
         </div>
-        <button type="button" id="share-history-button" class="btn btn-warning mt-3">Share game history</button>
+        <button type="button" id="share-history-button" class="btn btn-warning mt-3">Share your score</button>
         <button type="button" id="clear-history-button" class="btn btn-danger mt-3">Delete saved games</button>
+      </section>
+
+      <section class="bg-dark bg-opacity-75 p-4 rounded-3 shadow mb-5">
+        <h2 class="text-warning mb-4">Scoreboard</h2>
+        <div class="table-responsive">
+          <table class="table table-dark table-striped table-hover caption-top">
+            <thead class="table-warning">
+              <tr>
+                <th scope="col">Player</th>
+                <th scope="col">Opponent</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody id="scoreboard-body">
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- 
@@ -202,19 +218,15 @@
 
     <footer class="text-light mt-5">
       <figure>
-        <audio controls aria-labelledby="bg-music" tabindex="0">
-          <source src="assets/background.mp3" type="audio/mp3">
+        <audio id="myAudioPlayer" controls aria-labelledby="bg-music" tabindex="0" src="assets/music/background.mp3">
           Your browser does not support the audio element.
         </audio> <br>
         <small>
           Enjoy relaxing music while you play Rock Paper Scissors!
         </small>
         <figcaption id="bg-music">
-          <a class="link-warning text-decoration-none"
-            href="https://freesound.org/people/BenDerhover/sounds/691608/">Relaxing Galaxy Beat</a> by <a
-            class="link-warning text-decoration-none" href="https://freesound.org/people/BenDerhover/">BenDerhover</a> |
-          License: <a class="link-warning text-decoration-none"
-            href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons 0</a>
+          Relaxing Galaxy Beat by <a class="link-warning text-decoration-none"
+            href="https://freesound.org/people/BenDerhover/">BenDerhover</a>
         </figcaption>
       </figure>
       <small>
@@ -223,7 +235,7 @@
       </small>
     </footer>
   </div>
-   <script type="module">
+  <script type="module">
     // Register service worker if supported
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register(new URL('service-worker.js', import.meta.url),
