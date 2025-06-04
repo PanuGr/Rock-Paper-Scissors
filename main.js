@@ -1,7 +1,7 @@
 import { updatePlayerName, updatePlayerScoreDisplay } from './modules/playerName.js';
 import { loadGameHistory, addGameToHistory, clearGameHistory } from './modules/scoreboard.js';
 import { shareScore, getResults } from './modules/shareScore.js';
-import { loadTrack } from './modules/playlist.js';
+//import { loadTrack } from './modules/playlist.js';
 
 // Game state
 const gameState = {
@@ -32,9 +32,10 @@ const computerScoreDisplay = document.getElementById('computer-score');
 const dashboardButton = document.getElementById('dashboard-button');
 const shareHistoryButton = document.getElementById('share-history-button');
 const clearHistoryButton = document.getElementById('clear-history-button');
+/* 
 const audioPlayer = document.getElementById('myAudioPlayer');
 let currentTrackIndex = 0;
-
+ */
 
 /**
  * Get the user's choice from radio buttons
@@ -464,9 +465,10 @@ document.addEventListener('DOMContentLoaded', () => {
   shareHistoryButton.addEventListener('click', shareScore);
   //Show Scoreboard
   getResults();
+  /* 
   // Play the next track when the current one ends
   audioPlayer.addEventListener('ended', () => {
     loadTrack(currentTrackIndex + 1);
   });
-
+ */
 });

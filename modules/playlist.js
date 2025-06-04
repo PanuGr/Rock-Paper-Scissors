@@ -1,4 +1,4 @@
-
+//This doesn't work with Parcel
 /* const prevButton = document.getElementById('prevButton');
 const nextButton = document.getElementById('nextButton');
  */
