@@ -37,7 +37,7 @@ In this project, I've been working a lot with if-statements, switch functions an
 - [ ] Multiplayer
 - [ ] Online game history
 - [x] PWA
-- [x] Sound effects/background music 
+- [x] Sound effects/background music (Playlist not supported by Parcel. 1 song available) 
 
 ### Attributions
 1. Relaxing Galaxy Beat by BenDerhover -- https://freesound.org/people/BenDerhover/ --
