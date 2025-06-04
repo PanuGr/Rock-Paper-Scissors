@@ -38,3 +38,9 @@ In this project, I've been working a lot with if-statements, switch functions an
 - [ ] Online game history
 - [x] PWA
 - [x] Sound effects/background music 
+
+### Attributions
+1. Relaxing Galaxy Beat by BenDerhover -- https://freesound.org/people/BenDerhover/ --
+License: Creative Commons 0
+2. Liszt - Fantasy on Beethoven's The Ruins of Athens - S. 122 - Arranged for Piano by GregorQuendel -- https://freesound.org/s/745869/ -- License: Attribution NonCommercial 4.0
+3. Melaka, Chinese Temple by Mings -- https://freesound.org/s/325065/ -- License: Attribution NonCommercial 4.0

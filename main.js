@@ -1,5 +1,7 @@
 import { updatePlayerName, updatePlayerScoreDisplay } from './modules/playerName.js';
 import { loadGameHistory, addGameToHistory, clearGameHistory } from './modules/scoreboard.js';
+import { shareScore, getResults } from './modules/shareScore.js';
+import { loadTrack } from './modules/playlist.js';
 
 // Game state
 const gameState = {
@@ -26,10 +28,12 @@ const playerChoices = document.querySelectorAll('[name="user"]');
 const computerChoiceIcons = Array.from(document.querySelectorAll('.computer-choice'));
 const playButton = document.getElementById('play-button');
 const resultDisplay = document.getElementById('result');
-//const playerScoreDisplay = document.getElementById('player-score');
 const computerScoreDisplay = document.getElementById('computer-score');
+const dashboardButton = document.getElementById('dashboard-button');
 const shareHistoryButton = document.getElementById('share-history-button');
 const clearHistoryButton = document.getElementById('clear-history-button');
+const audioPlayer = document.getElementById('myAudioPlayer');
+let currentTrackIndex = 0;
 
 
 /**
@@ -297,7 +301,6 @@ function reset(e) {
  */
 function toggleDashboard() {
   const dashboard = document.getElementById('dashboard');
-  const dashboardButton = document.getElementById('dashboard-button');
 
   if (dashboard) {
     const isVisible = dashboard.style.display !== 'none';
@@ -364,8 +367,7 @@ function createDashboard() {
   `;
 
   // Add dashboard to the page after the scores
-  const scoreDisplay = document.querySelector('.score-display');
-  scoreDisplay.parentNode.insertBefore(dashboard, resultDisplay.nextSibling);
+  dashboardButton.parentNode.insertBefore(dashboard, dashboardButton.nextSibling);
 
   // Initial update
   updateDashboard();
@@ -437,14 +439,14 @@ function updateDashboard(playerMove, computerMove, result) {
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize game
   updatePlayerScoreDisplay(gameState);
-  loadGameHistory(gameState,'GameHistory'); // Φόρτωση του ιστορικού κατά την έναρξη
+  loadGameHistory(gameState, 'GameHistory'); // Φόρτωση του ιστορικού κατά την έναρξη
   if (clearHistoryButton) {
     clearHistoryButton.addEventListener('click', clearGameHistory);
   }
   // Add player name input event listener
   const playerNameInput = document.getElementById('player-name');
   if (playerNameInput) {
-  playerNameInput.value = gameState.singlePlayer.playerName; // Ορισμός αρχικής τιμής από το gameState
+    playerNameInput.value = gameState.singlePlayer.playerName; // Ορισμός αρχικής τιμής από το gameState
 
     playerNameInput.addEventListener('change', () => updatePlayerName(gameState));
     playerNameInput.addEventListener('blur', () => updatePlayerName(gameState));
@@ -457,5 +459,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Reset game history for new difficulty
   document.getElementById('difficulty-select').addEventListener('change', reset);
   // Add event listener to open dashboard
-  document.getElementById("dashboard-button").addEventListener('click', toggleDashboard);
+  dashboardButton.addEventListener('click', toggleDashboard);
+  //Share score at Supabase
+  shareHistoryButton.addEventListener('click', shareScore);
+  //Show Scoreboard
+  getResults();
+  // Play the next track when the current one ends
+  audioPlayer.addEventListener('ended', () => {
+    loadTrack(currentTrackIndex + 1);
+  });
+
 });

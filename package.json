@@ -12,10 +12,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@parcel/packager-raw-url": "^2.15.1",
-    "@parcel/transformer-webmanifest": "^2.15.1",
-    "@supabase/supabase-js": "^2.49.5",
+    "@parcel/packager-raw-url": "^2.15.2",
+    "@parcel/transformer-webmanifest": "^2.15.2",
+    "@supabase/supabase-js": "^2.49.9",
     "buffer": "^6.0.3",
-    "parcel": "^2.15.1"
+    "parcel": "^2.15.2"
   }
 }
